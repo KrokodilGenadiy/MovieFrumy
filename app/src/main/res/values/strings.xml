@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MovieFrumy</string>
+    <string name="menu_favorites_title">Избранное</string>
+    <string name="menu_selections_title">Подборки</string>
+    <string name="menu_watch_later_title">Посмотреть позже</string>
+    <string name="menu_settings_title">Настройки</string>
 </resources>
