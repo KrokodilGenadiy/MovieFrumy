@@ -7,18 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
+import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
 
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
+
+class FavoritesFragment : Fragment() {
+    private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var filmsAdapter: FilmAdapter
+    private lateinit var filmsAdapter: FavoritesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         val view = binding.root
         return view
     }
@@ -27,8 +28,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //находим наш RV
-        _binding?.mainRecycler?.apply {
-            filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener{
+        _binding?.favoritesRecycler?.apply {
+            filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener{
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
                 }
@@ -42,15 +43,19 @@ class HomeFragment : Fragment() {
             addItemDecoration(decorator)
         }
         //Кладем нашу БД в RV
-        updateData(Database.filmsDataBase as MutableList<Film>)
+        if (Database.favoritesList.isEmpty())
+            _binding?.listIsEmptyText?.visibility = View.VISIBLE
+        else
+            _binding?.listIsEmptyText?.visibility = View.GONE
+
+        updateData(Database.favoritesList)
     }
 
     fun updateData(newList: MutableList<Film>){
-        val oldList = filmsAdapter.getItems()
+        val oldList = filmsAdapter.getFavorites()
         val productDiff = FilmDiff(oldList,newList)
         val diffResult = DiffUtil.calculateDiff(productDiff)
-        filmsAdapter.setItems(newList)
+        filmsAdapter.setFavorites(newList)
         diffResult.dispatchUpdatesTo(filmsAdapter)
     }
-
 }
