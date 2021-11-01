@@ -8,14 +8,26 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.zaus_app.moviefrumy.Database.filmsDataBase
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import java.util.*
+import androidx.appcompat.app.AppCompatActivity
+
+
+
+
+
+
+
+
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FilmAdapter
+    private var check_ScrollingUp = false
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -61,11 +73,14 @@ class HomeFragment : Fragment() {
         initRecycler()
         //Кладем нашу БД в RV
         updateData(filmsDataBase as MutableList<Film>)
+
+        binding.include.mainRecycler.isNestedScrollingEnabled = false
     }
+
 
     fun initRecycler() {
         //находим наш RV
-        _binding?.mainRecycler?.apply {
+        _binding?.include?.mainRecycler?.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -88,6 +103,5 @@ class HomeFragment : Fragment() {
         filmsAdapter.setItems(newList)
         diffResult.dispatchUpdatesTo(filmsAdapter)
     }
-
 
 }
