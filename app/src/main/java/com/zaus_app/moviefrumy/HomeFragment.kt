@@ -14,20 +14,10 @@ import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import java.util.*
 import androidx.appcompat.app.AppCompatActivity
 
-
-
-
-
-
-
-
-
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FilmAdapter
-    private var check_ScrollingUp = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
