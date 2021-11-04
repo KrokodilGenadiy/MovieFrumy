@@ -65,7 +65,7 @@ class DetailsFragment : Fragment() {
     private fun setFilmsDetails(film: Film) {
         //Получаем наш фильм из переданного бандла
         //Устанавливаем заголовок
-        binding.toolbarLayout.title = film.title
+        binding.title.text = film.title
         //Устанавливаем картинку
         binding.detailsPoster.setImageResource(film.poster)
         //Устанавливаем описание

@@ -42,18 +42,12 @@ class MainActivity : AppCompatActivity() {
         //Прикрепляем нашу "посылку" к фрагменту
         fragment.arguments = bundle
 
+        //Запускаем фрагмент
         supportFragmentManager
             .beginTransaction()
-          //  .addSharedElement(binding.main.main_recycler.item_container.poster,binding.main.main_recycler.item_container.poster.transitionName)
             .replace(R.id.fragment_placeholder, fragment)
             .addToBackStack(null)
             .commit()
-        //Запускаем фрагмент
-   //     supportFragmentManager
-     //       .beginTransaction()
-        //    .replace(R.id.fragment_placeholder, fragment)
-         //   .addToBackStack(null)
-          //  .commit()
     }
 
     private fun initNavigation() {
