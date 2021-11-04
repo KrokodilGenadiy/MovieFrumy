@@ -25,6 +25,7 @@ class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .centerCrop()
             //Указываем ImageView, куда будем загружать изображение
             .into(poster)
+        poster.transitionName = "img_item_unique_name_${position}"
         //Устанавливаем описание
         description.text = film.description
     }

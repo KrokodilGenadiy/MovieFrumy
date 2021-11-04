@@ -1,25 +1,23 @@
 package com.zaus_app.moviefrumy
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
+import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialFadeThrough
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
-import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
-import kotlinx.android.synthetic.main.film_item.view.*
-import kotlinx.android.synthetic.main.fragment_details.*
-import kotlinx.android.synthetic.main.fragment_details.view.*
-import kotlinx.android.synthetic.main.fragment_favorites.*
+import java.util.concurrent.TimeUnit
+
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -78,8 +76,6 @@ class DetailsFragment : Fragment() {
             else R.drawable.ic_baseline_favorite_border_24
         )
     }
-
-
 
 
 }

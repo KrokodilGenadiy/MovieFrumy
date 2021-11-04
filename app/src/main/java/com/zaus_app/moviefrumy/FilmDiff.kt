@@ -2,7 +2,8 @@ package com.zaus_app.moviefrumy
 
 import androidx.recyclerview.widget.DiffUtil
 
-class FilmDiff(val oldList: MutableList<Film>,val newList: MutableList<Film>): DiffUtil.Callback() {
+class FilmDiff(val oldList: MutableList<Film>, val newList: MutableList<Film>) :
+    DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

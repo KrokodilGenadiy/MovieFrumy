@@ -1,13 +1,14 @@
 package com.zaus_app.moviefrumy
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
+import kotlinx.android.synthetic.main.film_item.view.*
 
 
 class FavoritesFragment : Fragment() {
@@ -29,7 +30,7 @@ class FavoritesFragment : Fragment() {
 
         //находим наш RV
         _binding?.favoritesRecycler?.apply {
-            filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener{
+            filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
                 }
@@ -51,9 +52,9 @@ class FavoritesFragment : Fragment() {
         updateData(Database.favoritesList)
     }
 
-    fun updateData(newList: MutableList<Film>){
+    fun updateData(newList: MutableList<Film>) {
         val oldList = filmsAdapter.getFavorites()
-        val productDiff = FilmDiff(oldList,newList)
+        val productDiff = FilmDiff(oldList, newList)
         val diffResult = DiffUtil.calculateDiff(productDiff)
         filmsAdapter.setFavorites(newList)
         diffResult.dispatchUpdatesTo(filmsAdapter)

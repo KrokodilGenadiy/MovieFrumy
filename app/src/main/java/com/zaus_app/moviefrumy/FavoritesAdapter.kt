@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 
-class FavoritesAdapter (private val clickListener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FavoritesAdapter(private val clickListener: OnItemClickListener) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //Здесь у нас хранится список элементов для RV
     private var favorites = mutableListOf<Film>()
 
@@ -14,7 +15,9 @@ class FavoritesAdapter (private val clickListener: OnItemClickListener) : Recycl
 
     //В этом методе мы привязываем наш view holder и передаем туда "надутую" верстку нашего фильма
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return FilmViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.film_item, parent, false))
+        return FilmViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.film_item, parent, false)
+        )
     }
 
     //В этом методе будет привзяка полей из объекта Film, к view из film_item.xml
@@ -34,7 +37,7 @@ class FavoritesAdapter (private val clickListener: OnItemClickListener) : Recycl
             }
         }
     }
-    
+
     fun getFavorites(): MutableList<Film> {
         return favorites
     }

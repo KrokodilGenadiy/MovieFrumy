@@ -1,11 +1,17 @@
 package com.zaus_app.moviefrumy
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Adapter
+import android.view.Gravity.apply
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
-import androidx.recyclerview.widget.DiffUtil
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat.apply
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.content_scrolling.view.*
+import kotlinx.android.synthetic.main.film_item.view.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -24,6 +30,8 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
+
+
     fun launchDetailsFragment(film: Film) {
         //Создаем "посылку"
         val bundle = Bundle()
@@ -34,14 +42,19 @@ class MainActivity : AppCompatActivity() {
         //Прикрепляем нашу "посылку" к фрагменту
         fragment.arguments = bundle
 
-        //Запускаем фрагмент
         supportFragmentManager
             .beginTransaction()
+          //  .addSharedElement(binding.main.main_recycler.item_container.poster,binding.main.main_recycler.item_container.poster.transitionName)
             .replace(R.id.fragment_placeholder, fragment)
+            .addToBackStack(null)
             .commit()
+        //Запускаем фрагмент
+   //     supportFragmentManager
+     //       .beginTransaction()
+        //    .replace(R.id.fragment_placeholder, fragment)
+         //   .addToBackStack(null)
+          //  .commit()
     }
-
-
 
     private fun initNavigation() {
         binding.bottomNavigation.setOnItemSelectedListener {
@@ -50,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                     supportFragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_placeholder, FavoritesFragment())
+                        .addToBackStack(null)
                         .commit()
                     true
                 }

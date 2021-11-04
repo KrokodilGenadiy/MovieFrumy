@@ -1,18 +1,19 @@
 package com.zaus_app.moviefrumy
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.doOnPreDraw
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionInflater
 import com.zaus_app.moviefrumy.Database.filmsDataBase
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.film_item.view.*
 import java.util.*
-import androidx.appcompat.app.AppCompatActivity
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -25,6 +26,8 @@ class HomeFragment : Fragment() {
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
+        sharedElementReturnTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
         return view
     }
 
