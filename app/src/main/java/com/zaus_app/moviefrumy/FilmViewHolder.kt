@@ -3,6 +3,7 @@ package com.zaus_app.moviefrumy
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
@@ -25,7 +26,8 @@ class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             .centerCrop()
             //Указываем ImageView, куда будем загружать изображение
             .into(poster)
-        poster.transitionName = "img_item_unique_name_${position}"
+        //Добавляем каждой картинке уникальный Transition name
+        ViewCompat.setTransitionName(poster, "transition" + R.id.poster)
         //Устанавливаем описание
         description.text = film.description
     }

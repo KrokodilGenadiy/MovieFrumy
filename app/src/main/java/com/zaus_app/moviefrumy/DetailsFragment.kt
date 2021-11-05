@@ -1,15 +1,13 @@
 package com.zaus_app.moviefrumy
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.transition.TransitionInflater
-import com.google.android.material.transition.MaterialContainerTransform
-import com.google.android.material.transition.MaterialFadeThrough
+import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import java.util.concurrent.TimeUnit
 
@@ -17,7 +15,6 @@ import java.util.concurrent.TimeUnit
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,6 +64,13 @@ class DetailsFragment : Fragment() {
         //Устанавливаем заголовок
         binding.title.text = film.title
         //Устанавливаем картинку
+        Glide.with(binding.detailsPoster)
+            //Загружаем сам ресурс
+            .load(film.poster)
+            //Центруем изображение
+            .centerCrop()
+            //Указываем ImageView, куда будем загружать изображение
+            .into(binding.detailsPoster)
         binding.detailsPoster.setImageResource(film.poster)
         //Устанавливаем описание
         binding.detailsDescription.text = film.description

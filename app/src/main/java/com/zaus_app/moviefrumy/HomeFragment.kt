@@ -5,14 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.TransitionInflater
 import com.zaus_app.moviefrumy.Database.filmsDataBase
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
-import kotlinx.android.synthetic.main.film_item.view.*
 import java.util.*
 
 class HomeFragment : Fragment() {
@@ -31,8 +29,6 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }

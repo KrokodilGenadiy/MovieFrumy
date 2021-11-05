@@ -1,24 +1,19 @@
 package com.zaus_app.moviefrumy
 
 import android.os.Bundle
-import android.view.Gravity.apply
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat.apply
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.content_scrolling.view.*
-import kotlinx.android.synthetic.main.film_item.view.*
+import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var homeBinding: FragmentHomeBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        homeBinding = FragmentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         initNavigation()
@@ -29,8 +24,6 @@ class MainActivity : AppCompatActivity() {
             .add(R.id.fragment_placeholder, HomeFragment())
             .commit()
     }
-
-
 
     fun launchDetailsFragment(film: Film) {
         //Создаем "посылку"

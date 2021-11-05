@@ -8,7 +8,6 @@
     android:background="@drawable/background"
     tools:context=".MainActivity">
 
-
     <FrameLayout
         android:id="@+id/fragment_placeholder"
         android:layout_width="match_parent"
