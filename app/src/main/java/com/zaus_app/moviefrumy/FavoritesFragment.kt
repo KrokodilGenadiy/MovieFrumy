@@ -27,6 +27,7 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragment, requireActivity(),2)
         //находим наш RV
         _binding?.favoritesRecycler?.apply {
             filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener {
