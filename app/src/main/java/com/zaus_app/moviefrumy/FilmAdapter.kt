@@ -31,8 +31,6 @@ class FilmAdapter(private val clickListener: OnItemClickListener) :
                 //Обрабатываем нажатие на весь элемент целиком(можно сделать на отдельный элемент
                 //напрмер, картинку) и вызываем метод нашего листенера, который мы получаем из
                 //конструктора адаптера
-                holder.itemView.findViewById<ImageView>(R.id.poster).transitionName =
-                    "transition" + R.id.poster
                 holder.itemView.setOnClickListener {
                     clickListener.click(items[position])
                 }

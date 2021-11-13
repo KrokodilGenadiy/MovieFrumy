@@ -32,11 +32,17 @@ class DetailsFragment : Fragment() {
 
         binding.detailsFabFavorites.setOnClickListener {
             if (!film.isInFavorites) {
-                binding.detailsFabFavorites.setImageResource(R.drawable.ic_round_favorite)
+                Glide.with( binding.detailsFabFavorites)
+                    .load(R.drawable.ic_round_favorite)
+                    .into(binding.detailsFabFavorites)
+               // binding.detailsFabFavorites.setImageResource(R.drawable.ic_round_favorite)
                 film.isInFavorites = true
                 Database.favoritesList.add(film)
             } else {
-                binding.detailsFabFavorites.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+                Glide.with( binding.detailsFabFavorites)
+                    .load(R.drawable.ic_baseline_favorite_border_24)
+                    .into(binding.detailsFabFavorites)
+             //   binding.detailsFabFavorites.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 film.isInFavorites = false
                 Database.favoritesList.remove(film)
             }

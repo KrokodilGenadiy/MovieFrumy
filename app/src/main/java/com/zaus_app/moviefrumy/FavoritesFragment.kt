@@ -27,7 +27,11 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragment, requireActivity(),2)
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            binding.favoritesFragment,
+            requireActivity(),
+            2
+        )
         //находим наш RV
         _binding?.favoritesRecycler?.apply {
             filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener {
@@ -44,10 +48,14 @@ class FavoritesFragment : Fragment() {
             addItemDecoration(decorator)
         }
         //Кладем нашу БД в RV
-        if (Database.favoritesList.isEmpty())
+        if (Database.favoritesList.isEmpty()) {
             _binding?.listIsEmptyText?.visibility = View.VISIBLE
-        else
+            _binding?.lottieAnim?.visibility = View.VISIBLE
+        } else {
             _binding?.listIsEmptyText?.visibility = View.GONE
+            _binding?.lottieAnim?.visibility = View.GONE
+        }
+
 
         updateData(Database.favoritesList)
     }
