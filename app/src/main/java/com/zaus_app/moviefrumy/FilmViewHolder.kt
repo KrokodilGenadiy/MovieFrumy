@@ -31,5 +31,6 @@ class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         description.text = film.description
         //Устанавливаем рэйтинг
         ratingDonut.setProgress((film.rating * 10).toInt())
+        ratingDonut.animateProgress()
     }
 }

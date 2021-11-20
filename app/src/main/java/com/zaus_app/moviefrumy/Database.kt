@@ -35,8 +35,8 @@ object Database {
         Film(
             "Hamilton",
             R.drawable.fast,
-            "The real life of one of America's foremost founding fathers and first Secretary of the Treasury, Alexander Hamilton. Captured live on Broadway from the Richard Rodgers Theater with the original Broadway cast."
-        ),
+            "The real life of one of America's foremost founding fathers and first Secretary of the Treasury, Alexander Hamilton. Captured live on Broadway from the Richard Rodgers Theater with the original Broadway cast.",
+            3.5f),
         Film(
             "Interstellar",
             R.drawable.gladiator,
@@ -53,7 +53,7 @@ object Database {
             "1917",
             R.drawable.bad,
             "April 6th, 1917. As a regiment assembles to wage war deep in enemy territory, two soldiers are assigned to race against time and deliver a message that will stop 1,600 men from walking straight into a deadly trap.",
-            6.7f
+            10f
         )
     )
     val favoritesList = mutableListOf<Film>()
