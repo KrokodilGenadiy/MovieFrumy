@@ -3,6 +3,7 @@ package com.zaus_app.moviefrumy
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.zaus_app.moviefrumy.domain.Film
 
 
 class FavoritesAdapter(private val clickListener: OnItemClickListener) :

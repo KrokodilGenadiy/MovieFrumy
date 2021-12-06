@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_details" >
         <argument
             android:name="film"
-            app:argType="com.zaus_app.moviefrumy.Film" />
+            app:argType="com.zaus_app.moviefrumy.domain.Film" />
     </fragment>
 </navigation>

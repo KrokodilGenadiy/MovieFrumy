@@ -1,5 +1,7 @@
 package com.zaus_app.moviefrumy
 
+import com.zaus_app.moviefrumy.domain.Film
+
 object Database {
     val filmsDataBase = listOf(
         Film(

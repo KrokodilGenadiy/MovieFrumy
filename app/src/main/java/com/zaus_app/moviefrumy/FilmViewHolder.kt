@@ -3,9 +3,9 @@ package com.zaus_app.moviefrumy
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.zaus_app.moviefrumy.domain.Film
 
 //В конструктор класс передается layout, который мы создали(film_item.xml)
 class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

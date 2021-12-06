@@ -1,11 +1,11 @@
 package com.zaus_app.moviefrumy
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
+import com.zaus_app.moviefrumy.domain.Film
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

@@ -8,9 +8,10 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.transition.TransitionInflater
 import com.zaus_app.moviefrumy.Database.filmsDataBase
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
+import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.utils.AnimationHelper
 import java.util.*
 
 class HomeFragment : Fragment() {

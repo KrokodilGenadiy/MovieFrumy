@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
+import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.utils.AnimationHelper
 
 
 class FavoritesFragment : Fragment() {

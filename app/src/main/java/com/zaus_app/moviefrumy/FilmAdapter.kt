@@ -2,8 +2,8 @@ package com.zaus_app.moviefrumy
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.zaus_app.moviefrumy.domain.Film
 
 class FilmAdapter(private val clickListener: OnItemClickListener) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

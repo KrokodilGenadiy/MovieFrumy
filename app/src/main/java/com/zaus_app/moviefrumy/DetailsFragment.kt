@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.transition.TransitionInflater
 import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
-import java.util.concurrent.TimeUnit
+import com.zaus_app.moviefrumy.domain.Film
 
 
 class DetailsFragment : Fragment() {

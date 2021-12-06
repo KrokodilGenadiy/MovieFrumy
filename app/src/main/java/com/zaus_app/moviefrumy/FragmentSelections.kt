@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.databinding.FragmentSelectionsBinding
+import com.zaus_app.moviefrumy.utils.AnimationHelper
 
 
 class FragmentSelections : Fragment() {
