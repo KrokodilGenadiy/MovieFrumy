@@ -1,4 +1,4 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import com.zaus_app.moviefrumy.databinding.FragmentSelectionsBinding
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 
 
-class FragmentSelections : Fragment() {
+class SelectionsFragment : Fragment() {
     private var _binding: FragmentSelectionsBinding? = null
     private val binding get() = _binding!!
 

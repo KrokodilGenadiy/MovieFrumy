@@ -1,4 +1,4 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,18 +6,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zaus_app.moviefrumy.Database.filmsDataBase
+import androidx.lifecycle.Observer
+import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
+import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
+import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
+import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
+import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
 
 class HomeFragment : Fragment() {
+    private val viewModel by lazy {
+        ViewModelProvider.NewInstanceFactory().create(HomeFragmentViewModel::class.java)
+    }
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FilmAdapter
+    private var filmsDataBase = mutableListOf<Film>()
+        //Используем backing field
+        set(value) {
+            //Если придет такое же значение то мы выходим из метода
+            if (field == value) return
+            //Если прило другое значение, то кладем его в переменную
+            field = value
+            //Обновляем RV адаптер
+           updateData(field)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +81,10 @@ class HomeFragment : Fragment() {
         })
         initRecycler()
         //Кладем нашу БД в RV
-        updateData(filmsDataBase as MutableList<Film>)
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner, Observer<List<Film>> {
+            filmsDataBase = it as MutableList<Film>
+        })
+
 
         binding.include.mainRecycler.isNestedScrollingEnabled = false
     }

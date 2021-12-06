@@ -1,8 +1,9 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.data
 
+import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.domain.Film
 
-object Database {
+object MainRepository {
     val filmsDataBase = listOf(
         Film(
             "The Shawshank Redemption",

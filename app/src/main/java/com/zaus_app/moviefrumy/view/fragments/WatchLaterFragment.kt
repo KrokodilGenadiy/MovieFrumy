@@ -1,4 +1,4 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

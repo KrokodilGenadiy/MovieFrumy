@@ -1,4 +1,4 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.zaus_app.moviefrumy.R
+import com.zaus_app.moviefrumy.data.MainRepository
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import com.zaus_app.moviefrumy.domain.Film
 
@@ -36,14 +38,14 @@ class DetailsFragment : Fragment() {
                     .into(binding.detailsFabFavorites)
                // binding.detailsFabFavorites.setImageResource(R.drawable.ic_round_favorite)
                 film.isInFavorites = true
-                Database.favoritesList.add(film)
+                MainRepository.favoritesList.add(film)
             } else {
                 Glide.with( binding.detailsFabFavorites)
                     .load(R.drawable.ic_baseline_favorite_border_24)
                     .into(binding.detailsFabFavorites)
              //   binding.detailsFabFavorites.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 film.isInFavorites = false
-                Database.favoritesList.remove(film)
+                MainRepository.favoritesList.remove(film)
             }
         }
 

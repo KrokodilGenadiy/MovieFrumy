@@ -1,11 +1,13 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.view.fragments.*
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -71,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.selections -> {
                     val tag = "selections"
                     val fragment = checkFragmentExistence(tag)
-                    changeFragment( fragment?: FragmentSelections(), tag)
+                    changeFragment( fragment?: SelectionsFragment(), tag)
                     true
                 }
                 else -> false

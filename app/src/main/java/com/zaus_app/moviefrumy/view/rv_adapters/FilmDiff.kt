@@ -1,4 +1,4 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view.rv_adapters
 
 import androidx.recyclerview.widget.DiffUtil
 import com.zaus_app.moviefrumy.domain.Film

@@ -1,4 +1,4 @@
-package com.zaus_app.moviefrumy
+package com.zaus_app.moviefrumy.view.customviews
 
 import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
+import com.zaus_app.moviefrumy.R
 
 class RatingDonutView @JvmOverloads constructor(
     context: Context,
