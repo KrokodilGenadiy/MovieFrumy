@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.R
+import com.zaus_app.moviefrumy.data.ApiConstants
 import com.zaus_app.moviefrumy.data.MainRepository
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import com.zaus_app.moviefrumy.domain.Film
@@ -71,14 +72,10 @@ class DetailsFragment : Fragment() {
         //Устанавливаем заголовок
         binding.title.text = film.title
         //Устанавливаем картинку
-        Glide.with(binding.detailsPoster)
-            //Загружаем сам ресурс
-            .load(film.poster)
-            //Центруем изображение
+        Glide.with(this)
+            .load(ApiConstants.IMAGES_URL + "w780" + film.poster)
             .centerCrop()
-            //Указываем ImageView, куда будем загружать изображение
             .into(binding.detailsPoster)
-        binding.detailsPoster.setImageResource(film.poster)
         //Устанавливаем описание
         binding.detailsDescription.text = film.description
         //Устанавиливаем значок любимого
