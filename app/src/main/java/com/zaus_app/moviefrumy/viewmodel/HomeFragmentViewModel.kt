@@ -8,22 +8,32 @@ import com.zaus_app.moviefrumy.domain.Interactor
 
 class HomeFragmentViewModel : ViewModel() {
     val filmsListLiveData:  MutableLiveData<List<Film>> = MutableLiveData()
+    private var currentPage = 1
     //Инициализируем интерактор
     private var interactor: Interactor = App.instance.interactor
 
-    init {
-        interactor.getFilmsFromApi(1, object : ApiCallback {
-            override fun onSuccess(films: List<Film>) {
-                filmsListLiveData.postValue(films)
-            }
+    val apiCallback = object : ApiCallback {
+        override fun onSuccess(films: List<Film>) {
+            filmsListLiveData.postValue(films)
+        }
 
-            override fun onFailure() {
-            }
-        })
+        override fun onFailure() {
+        }
+    }
+
+    init {
+        interactor.getFilmsFromApi(1, apiCallback)
     }
 
     interface ApiCallback {
         fun onSuccess(films: List<Film>)
         fun onFailure()
+    }
+
+    fun doPagination(visibleItemCount: Int,totalItemCount: Int,pastVisibleItemCOunt: Int) {
+        if ((visibleItemCount+pastVisibleItemCOunt) >= totalItemCount -2) {
+            val page = ++currentPage
+            interactor.getFilmsFromApi(page,apiCallback)
+        }
     }
 }
