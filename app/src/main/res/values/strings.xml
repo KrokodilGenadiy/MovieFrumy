@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">MovieFrumy</string>
+    <string name="menu_favorites_title">Избранное</string>
+    <string name="menu_selections_title">Подборки</string>
+    <string name="menu_watch_later_title">Посмотреть позже</string>
+    <string name="menu_settings_title">Настройки</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu_home_title_text">Главная</string>
+    <string name="list_is_empty">Список пуст!</string>
 </resources>
