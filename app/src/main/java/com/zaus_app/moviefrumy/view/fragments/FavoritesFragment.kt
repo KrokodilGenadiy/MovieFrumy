@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +17,6 @@ import com.zaus_app.moviefrumy.view.rv_adapters.FavoritesAdapter
 import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.FavoriteFragmentViewModel
-import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 
 
 class FavoritesFragment : Fragment() {
@@ -28,7 +26,7 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FavoritesAdapter
-    private var filmsDataBase = mutableListOf<Film>()
+    private var favotesDataBase = mutableListOf<Film>()
         //Используем backing field
         set(value) {
             //Если придет такое же значение то мы выходим из метода
@@ -44,8 +42,7 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +54,7 @@ class FavoritesFragment : Fragment() {
             2
         )
         //находим наш RV
-        _binding?.favoritesRecycler?.apply {
+        binding.favoritesRecycler.apply {
             filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -71,19 +68,21 @@ class FavoritesFragment : Fragment() {
             val decorator = ItemDecorator(8)
             addItemDecoration(decorator)
         }
-        //Кладем нашу БД в RV
-        if (MainRepository.favoritesList.isEmpty()) {
-            _binding?.listIsEmptyText?.visibility = View.VISIBLE
-            _binding?.lottieAnim?.visibility = View.VISIBLE
-        } else {
-            _binding?.listIsEmptyText?.visibility = View.GONE
-            _binding?.lottieAnim?.visibility = View.GONE
-        }
 
         //Кладем нашу БД в RV
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner, Observer<List<Film>> {
-            filmsDataBase = it as MutableList<Film>
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
+            favotesDataBase = it as MutableList<Film>
         })
+        //Кладем нашу БД в RV
+        if (MainRepository.favoritesList.isEmpty()) {
+            binding.listIsEmptyText.visibility = View.VISIBLE
+            binding.lottieAnim.visibility = View.VISIBLE
+        } else {
+            binding.listIsEmptyText.visibility = View.GONE
+            binding.lottieAnim.visibility = View.GONE
+        }
+
+
     }
 
     fun updateData(newList: MutableList<Film>) {

@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         //Зупускаем фрагмент при старте
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_placeholder, HomeFragment())
+            .add(R.id.fragment_placeholder, HomeFragment(), "home")
             .commit()
     }
 
@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         //Запускаем фрагмент
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_placeholder, fragment)
-            .addToBackStack(null)
+            .replace(R.id.fragment_placeholder, fragment, "details")
+            .addToBackStack("details")
             .commit()
     }
 
@@ -55,25 +55,25 @@ class MainActivity : AppCompatActivity() {
                     val fragment = checkFragmentExistence(tag)
                     //В первом параметре, если фрагмент не найден и метод вернул null, то с помощью
                     //элвиса мы вызываем создание нвого фрагмента
-                    changeFragment( fragment?: HomeFragment(), tag)
+                    changeFragment(fragment ?: HomeFragment(), tag)
                     true
                 }
                 R.id.favorites -> {
                     val tag = "favorites"
                     val fragment = checkFragmentExistence(tag)
-                    changeFragment( fragment?: FavoritesFragment(), tag)
+                    changeFragment(fragment ?: FavoritesFragment(), tag)
                     true
                 }
                 R.id.watch_later -> {
                     val tag = "watch_later"
                     val fragment = checkFragmentExistence(tag)
-                    changeFragment( fragment?: WatchLaterFragment(), tag)
+                    changeFragment(fragment ?: WatchLaterFragment(), tag)
                     true
                 }
                 R.id.selections -> {
                     val tag = "selections"
                     val fragment = checkFragmentExistence(tag)
-                    changeFragment( fragment?: SelectionsFragment(), tag)
+                    changeFragment(fragment ?: SelectionsFragment(), tag)
                     true
                 }
                 else -> false
@@ -82,12 +82,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     //Ищем фрагмент по тэгу, если он есть то возвращаем его, если нет - то null
-    private fun checkFragmentExistence(tag: String): Fragment? = supportFragmentManager.findFragmentByTag(tag)
+    private fun checkFragmentExistence(tag: String): Fragment? =
+        supportFragmentManager.findFragmentByTag(tag)
 
     private fun changeFragment(fragment: Fragment, tag: String) {
+
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_placeholder, fragment, tag)
             .commit()
+
     }
+
+
 }
