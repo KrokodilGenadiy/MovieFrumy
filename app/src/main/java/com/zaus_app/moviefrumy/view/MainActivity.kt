@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         //Зупускаем фрагмент при старте
         supportFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_placeholder, HomeFragment(), "home")
+            .replace(R.id.fragment_placeholder, HomeFragment(), "home")
             .commit()
     }
 
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_placeholder, fragment, "details")
-            .addToBackStack("details")
+            .addToBackStack(null)
             .commit()
     }
 
@@ -86,13 +86,12 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.findFragmentByTag(tag)
 
     private fun changeFragment(fragment: Fragment, tag: String) {
-
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_placeholder, fragment, tag)
-            .commit()
-
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.fragment_placeholder, fragment, tag)
+                .commit()
     }
+
 
 
 }

@@ -37,29 +37,58 @@ class FavoritesFragment : Fragment() {
             updateData(field)
         }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener {
+            override fun click(film: Film) {
+                (requireActivity() as MainActivity).launchDetailsFragment(film)
+            }
+        })
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        //Кладем нашу БД в RV
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
+            favotesDataBase = it as MutableList<Film>
+        })
+        initRecycler()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         AnimationHelper.performFragmentCircularRevealAnimation(
             binding.favoritesFragment,
             requireActivity(),
             2
         )
+
+        if (MainRepository.favoritesList.isEmpty()) {
+            binding.listIsEmptyText.visibility = View.VISIBLE
+            binding.lottieAnim.visibility = View.VISIBLE
+        } else {
+            binding.listIsEmptyText.visibility = View.GONE
+            binding.lottieAnim.visibility = View.GONE
+        }
+    }
+
+    fun updateData(newList: MutableList<Film>) {
+        val oldList = filmsAdapter.getFavorites()
+        val productDiff = FilmDiff(oldList, newList)
+        val diffResult = DiffUtil.calculateDiff(productDiff)
+        filmsAdapter.setFavorites(newList)
+        diffResult.dispatchUpdatesTo(filmsAdapter)
+    }
+
+    private fun initRecycler() {
         //находим наш RV
         binding.favoritesRecycler.apply {
-            filmsAdapter = FavoritesAdapter(object : FavoritesAdapter.OnItemClickListener {
-                override fun click(film: Film) {
-                    (requireActivity() as MainActivity).launchDetailsFragment(film)
-                }
-            })
             //Присваиваем адаптер
             adapter = filmsAdapter
             //Присвои layoutmanager
@@ -73,23 +102,10 @@ class FavoritesFragment : Fragment() {
         viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
             favotesDataBase = it as MutableList<Film>
         })
-        //Кладем нашу БД в RV
-        if (MainRepository.favoritesList.isEmpty()) {
-            binding.listIsEmptyText.visibility = View.VISIBLE
-            binding.lottieAnim.visibility = View.VISIBLE
-        } else {
-            binding.listIsEmptyText.visibility = View.GONE
-            binding.lottieAnim.visibility = View.GONE
-        }
-
-
     }
 
-    fun updateData(newList: MutableList<Film>) {
-        val oldList = filmsAdapter.getFavorites()
-        val productDiff = FilmDiff(oldList, newList)
-        val diffResult = DiffUtil.calculateDiff(productDiff)
-        filmsAdapter.setFavorites(newList)
-        diffResult.dispatchUpdatesTo(filmsAdapter)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.favoritesRecycler.adapter = null
     }
 }

@@ -8,6 +8,7 @@
     android:visibility="invisible"
     tools:visibility="visible"
     android:id="@+id/favorites_fragment"
+    android:tag="favorites"
     tools:context=".view.fragments.FavoritesFragment">
 
     <com.airbnb.lottie.LottieAnimationView
