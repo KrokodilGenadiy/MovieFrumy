@@ -12,6 +12,7 @@ import com.zaus_app.moviefrumy.data.ApiConstants
 import com.zaus_app.moviefrumy.data.MainRepository
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.view.MainActivity
 
 
 class DetailsFragment : Fragment() {
@@ -64,7 +65,6 @@ class DetailsFragment : Fragment() {
             //Запускаем наше активити
             startActivity(Intent.createChooser(intent, "Share To:"))
         }
-
     }
 
     private fun setFilmsDetails(film: Film) {
@@ -84,6 +84,4 @@ class DetailsFragment : Fragment() {
             else R.drawable.ic_baseline_favorite_border_24
         )
     }
-
-
 }

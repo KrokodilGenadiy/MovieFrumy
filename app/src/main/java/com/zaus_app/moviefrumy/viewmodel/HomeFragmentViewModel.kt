@@ -5,12 +5,15 @@ import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.domain.Interactor
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
-class HomeFragmentViewModel : ViewModel() {
-    val filmsListLiveData:  MutableLiveData<List<Film>> = MutableLiveData()
+class HomeFragmentViewModel : ViewModel(), KoinComponent {
+    val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
+    //Инициализируем интерактор
+    private val interactor: Interactor by inject()
     private var currentPage = 1
     //Инициализируем интерактор
-    private var interactor: Interactor = App.instance.interactor
 
     val apiCallback = object : ApiCallback {
         override fun onSuccess(films: List<Film>) {
