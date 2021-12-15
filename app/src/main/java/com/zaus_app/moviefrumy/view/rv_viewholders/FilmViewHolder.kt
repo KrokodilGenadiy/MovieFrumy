@@ -7,16 +7,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.ApiConstants
+import com.zaus_app.moviefrumy.databinding.FilmItemBinding
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.view.customviews.RatingDonutView
 
 //В конструктор класс передается layout, который мы создали(film_item.xml)
-class FilmViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class FilmViewHolder(binding: FilmItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    private val title = itemView.findViewById<TextView>(R.id.title)
-    private val poster = itemView.findViewById<ImageView>(R.id.poster)
-    private val description = itemView.findViewById<TextView>(R.id.description)
-    private val ratingDonut = itemView.findViewById<RatingDonutView>(R.id.rating_donut)
+    private val title = binding.title
+    private val poster = binding.poster
+    private val description = binding.description
+    private val ratingDonut = binding.ratingDonut
+
 
     //В этом методе кладем данные из film в наши view
     fun bind(film: Film) {

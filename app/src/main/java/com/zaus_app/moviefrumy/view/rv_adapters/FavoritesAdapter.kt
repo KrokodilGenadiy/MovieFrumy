@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.zaus_app.moviefrumy.view.rv_viewholders.FilmViewHolder
 import com.zaus_app.moviefrumy.R
+import com.zaus_app.moviefrumy.databinding.FilmItemBinding
 import com.zaus_app.moviefrumy.domain.Film
 
 
@@ -18,9 +19,8 @@ class FavoritesAdapter(private val clickListener: OnItemClickListener) :
 
     //В этом методе мы привязываем наш view holder и передаем туда "надутую" верстку нашего фильма
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return FilmViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.film_item, parent, false)
-        )
+        val binding = FilmItemBinding.inflate(LayoutInflater.from(parent.context),parent, false)
+        return FilmViewHolder(binding)
     }
 
     //В этом методе будет привзяка полей из объекта Film, к view из film_item.xml
