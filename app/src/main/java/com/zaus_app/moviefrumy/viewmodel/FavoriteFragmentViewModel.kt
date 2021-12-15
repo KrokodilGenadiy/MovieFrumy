@@ -5,16 +5,17 @@ import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.domain.Interactor
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
 
 
-class FavoriteFragmentViewModel : ViewModel(), KoinComponent {
+class FavoriteFragmentViewModel : ViewModel() {
     val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
     //Инициализируем интерактор
-    private val interactor: Interactor by inject()
+    @Inject
+    lateinit var interactor: Interactor
 
     init {
+        App.instance.dagger.injectFavorites(this)
         val films = interactor.getFavoriteFilms()
         filmsListLiveData.postValue(films)
     }

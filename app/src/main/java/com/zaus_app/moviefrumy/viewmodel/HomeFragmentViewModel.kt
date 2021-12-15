@@ -5,15 +5,16 @@ import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.domain.Interactor
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
 
-class HomeFragmentViewModel : ViewModel(), KoinComponent {
+
+class HomeFragmentViewModel : ViewModel() {
     val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
     //Инициализируем интерактор
-    private val interactor: Interactor by inject()
     private var currentPage = 1
     //Инициализируем интерактор
+    @Inject
+    lateinit var interactor: Interactor
 
     val apiCallback = object : ApiCallback {
         override fun onSuccess(films: List<Film>) {
@@ -25,6 +26,7 @@ class HomeFragmentViewModel : ViewModel(), KoinComponent {
     }
 
     init {
+        App.instance.dagger.injectHome(this)
         interactor.getFilmsFromApi(1, apiCallback)
     }
 
@@ -40,3 +42,5 @@ class HomeFragmentViewModel : ViewModel(), KoinComponent {
         }
     }
 }
+
+
