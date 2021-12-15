@@ -3,6 +3,7 @@ package com.zaus_app.moviefrumy.view
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
@@ -23,10 +24,7 @@ class MainActivity : AppCompatActivity() {
         initNavigation()
 
         //Зупускаем фрагмент при старте
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_placeholder, HomeFragment(), "home")
-            .commit()
+        changeFragment(HomeFragment(), "home")
     }
 
     fun launchDetailsFragment(film: Film) {
@@ -35,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         //Кладем наш фильм в "посылку"
         bundle.putParcelable("film", film)
         //Кладем фрагмент с деталями в перменную
-        val fragment = DetailsFragment()
+        val fragment = checkFragmentExistence("details")?: DetailsFragment()
         //Прикрепляем нашу "посылку" к фрагменту
         fragment.arguments = bundle
 
@@ -43,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_placeholder, fragment, "details")
-            .addToBackStack(null)
+            .addToBackStack("details")
             .commit()
     }
 
@@ -56,6 +54,7 @@ class MainActivity : AppCompatActivity() {
                     //В первом параметре, если фрагмент не найден и метод вернул null, то с помощью
                     //элвиса мы вызываем создание нвого фрагмента
                     changeFragment(fragment ?: HomeFragment(), tag)
+
                     true
                 }
                 R.id.favorites -> {
@@ -86,12 +85,22 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.findFragmentByTag(tag)
 
     private fun changeFragment(fragment: Fragment, tag: String) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.fragment_placeholder, fragment, tag)
-                .commit()
-    }
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStackImmediate()
+        }
+                    supportFragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_placeholder, fragment, tag)
+                        .commit()
+                }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed();
+        }
+    }
 
 
 }

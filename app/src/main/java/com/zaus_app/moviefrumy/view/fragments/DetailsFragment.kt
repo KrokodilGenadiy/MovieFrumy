@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.ApiConstants
 import com.zaus_app.moviefrumy.data.MainRepository
+import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.view.MainActivity
@@ -30,6 +32,7 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val film = arguments?.get("film") as Film
         setFilmsDetails(film)
 
