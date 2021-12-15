@@ -25,7 +25,7 @@ class HomeFragmentViewModel : ViewModel(), KoinComponent {
     }
 
     init {
-        interactor.getFilmsFromApi(2, apiCallback)
+        interactor.getFilmsFromApi(1, apiCallback)
     }
 
     interface ApiCallback {
