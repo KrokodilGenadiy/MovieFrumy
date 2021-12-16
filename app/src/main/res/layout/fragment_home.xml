@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:minHeight="0dp"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:statusBarScrim="@android:color/transparent"
             app:toolbarId="@+id/toolbar">
 
@@ -31,16 +31,23 @@
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
                     android:layout_margin="8dp"
                     android:background="@drawable/background_search_view" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include
-        android:id="@+id/include"
-        layout="@layout/content_scrolling" />
 
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/main_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:nestedScrollingEnabled="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:listitem="@layout/film_item" />
 
 
 

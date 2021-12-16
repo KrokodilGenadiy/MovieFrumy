@@ -1,27 +1,32 @@
 package com.zaus_app.moviefrumy.view.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
-import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
-import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
-import com.zaus_app.moviefrumy.view.MainActivity
+import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
+import com.zaus_app.moviefrumy.view.MainActivity
+import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
+import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
+import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
-import androidx.core.widget.NestedScrollView
-import com.zaus_app.moviefrumy.App
+import android.widget.Toast
+
+import androidx.recyclerview.widget.RecyclerView
+
+
+
+
 
 class HomeFragment : Fragment() {
     private val viewModel by lazy {
@@ -35,7 +40,7 @@ class HomeFragment : Fragment() {
         set(value) {
             //Если придет такое же значение то мы выходим из метода
             if (field == value) return
-            //Если прило другое значение, то кладем его в переменную
+            //Если пришло другое значение, то кладем его в переменную
             field = (field + value) as MutableList<Film>
             //Обновляем RV адаптер
             updateData(field)
@@ -54,7 +59,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AnimationHelper.performFragmentCircularRevealAnimation(binding.homeConstraintLayout, requireActivity(), 1)
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            binding.homeConstraintLayout,
+            requireActivity(),
+            1
+        )
 
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
@@ -92,12 +101,14 @@ class HomeFragment : Fragment() {
         })
 
 
-        binding.include.mainNestedScrollview.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if(v.getChildAt(v.childCount - 1) != null) {
-                if ((scrollY >= (v.getChildAt(v.childCount - 1).measuredHeight - v.measuredHeight) - 3000) && scrollY > oldScrollY) {
-                    val visibleItemCount = binding.include.mainRecycler.layoutManager!!.childCount
-                    val totalItemCount = binding.include.mainRecycler.layoutManager!!.itemCount
-                    val pastVisibleItemCount = (binding.include.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1)) {
+                    val visibleItemCount = binding.mainRecycler.layoutManager!!.childCount
+                    val totalItemCount = binding.mainRecycler.layoutManager!!.itemCount
+                    val pastVisibleItemCount =
+                        (binding.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.doPagination(visibleItemCount, totalItemCount, pastVisibleItemCount)
                 }
             }
@@ -107,7 +118,7 @@ class HomeFragment : Fragment() {
 
     fun initRecycler() {
         //находим наш RV
-        binding.include.mainRecycler.apply {
+        binding.mainRecycler.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -118,30 +129,30 @@ class HomeFragment : Fragment() {
             //Присвои layoutmanager
             layoutManager = LinearLayoutManager(requireContext())
             //добавляем пагинацию
-           // initPagination()
+            // initPagination()
             //Применяем декоратор для отступов
             val decorator = ItemDecorator(8)
             addItemDecoration(decorator)
-            isNestedScrollingEnabled = false
+                // isNestedScrollingEnabled = false
         }
     }
 
-    private fun RecyclerView.initPagination() {
-        addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    val visibleItemCount = recyclerView.layoutManager!!.childCount
-                    val totalItemCount = recyclerView.layoutManager!!.itemCount
-                    val pastVisibleItemCount = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                    viewModel.doPagination(
-                        visibleItemCount = visibleItemCount,
-                        totalItemCount = totalItemCount,
-                        pastVisibleItemCOunt = pastVisibleItemCount
-                    )
-                }
-            }
-        })
-    }
+    /* private fun RecyclerView.initPagination() {
+         addOnScrollListener(object : RecyclerView.OnScrollListener() {
+             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                 if (dy > 0) {
+                     val visibleItemCount = recyclerView.layoutManager!!.childCount
+                     val totalItemCount = recyclerView.layoutManager!!.itemCount
+                     val pastVisibleItemCount = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                     viewModel.doPagination(
+                         visibleItemCount = visibleItemCount,
+                         totalItemCount = totalItemCount,
+                         pastVisibleItemCOunt = pastVisibleItemCount
+                     )
+                 }
+             }
+         })
+     } */
 
     fun updateData(newList: MutableList<Film>) {
         val oldList = filmsAdapter.getItems()
