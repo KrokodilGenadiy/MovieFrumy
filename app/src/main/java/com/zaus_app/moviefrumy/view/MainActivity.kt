@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         //Кладем наш фильм в "посылку"
         bundle.putParcelable("film", film)
         //Кладем фрагмент с деталями в перменную
-        val fragment = checkFragmentExistence("details")?: DetailsFragment()
+        val fragment = checkFragmentExistence("details") ?: DetailsFragment()
         //Прикрепляем нашу "посылку" к фрагменту
         fragment.arguments = bundle
 
@@ -88,18 +89,10 @@ class MainActivity : AppCompatActivity() {
         if (supportFragmentManager.backStackEntryCount > 0) {
             supportFragmentManager.popBackStackImmediate()
         }
-                    supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.fragment_placeholder, fragment, tag)
-                        .commit()
-                }
-
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed();
-        }
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.fragment_placeholder, fragment, tag)
+            .commit()
     }
 
 

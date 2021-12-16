@@ -27,6 +27,7 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
+
         return view
     }
 

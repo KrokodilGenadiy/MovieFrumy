@@ -1,5 +1,6 @@
 package com.zaus_app.moviefrumy.view.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,7 @@ import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
 import androidx.core.widget.NestedScrollView
+import com.zaus_app.moviefrumy.App
 
 class HomeFragment : Fragment() {
     private val viewModel by lazy {
@@ -48,8 +50,10 @@ class HomeFragment : Fragment() {
         return view
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         AnimationHelper.performFragmentCircularRevealAnimation(binding.homeConstraintLayout, requireActivity(), 1)
 
         binding.searchView.setOnClickListener {
@@ -137,7 +141,6 @@ class HomeFragment : Fragment() {
                 }
             }
         })
-
     }
 
     fun updateData(newList: MutableList<Film>) {

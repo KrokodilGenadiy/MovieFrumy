@@ -4,6 +4,8 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.fragment.app.FragmentManager
+import com.zaus_app.moviefrumy.App
 import java.util.concurrent.Executors
 import kotlin.math.hypot
 import kotlin.math.roundToInt
@@ -17,6 +19,7 @@ object AnimationHelper {
     //2 - активити, для того чтобы вернуть выполнение нового треда в UI поток
     //3 - позиция в меню навигации, что бы круг проявления расходился именно от иконки меню навигации
     fun performFragmentCircularRevealAnimation(rootView: View, activity: Activity, position: Int) {
+        rootView.invalidate()
         //Создаем новый тред
         Executors.newSingleThreadExecutor().execute {
             //В бесконечном цикле проверям, когда наше анимируемое view будет "прикреплено" к экрану
@@ -35,13 +38,15 @@ object AnimationHelper {
                         val startRadius = 0
                         val endRadius = hypot(rootView.width.toDouble(), rootView.height.toDouble())
                         //Создаем саму анимацию
-                        ViewAnimationUtils.createCircularReveal(rootView, x, y, startRadius.toFloat(), endRadius.toFloat()).apply {
-                            //Устанавливаем время анимации
-                            duration = 500
-                            //Интерполятор для более естесственной анимации
-                            interpolator = AccelerateDecelerateInterpolator()
-                            //Запускаем
-                            start()
+                        if (rootView.isAttachedToWindow) {
+                            ViewAnimationUtils.createCircularReveal(rootView, x, y, startRadius.toFloat(), endRadius.toFloat()).apply {
+                                //Устанавливаем время анимации
+                                duration = 500
+                                //Интерполятор для более естесственной анимации
+                                interpolator = AccelerateDecelerateInterpolator()
+                                //Запускаем
+                                start()
+                            }
                         }
                         //Выставляяем видимость нашего елемента
                         rootView.visibility = View.VISIBLE

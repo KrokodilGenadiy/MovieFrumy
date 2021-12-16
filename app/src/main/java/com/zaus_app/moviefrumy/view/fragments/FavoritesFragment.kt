@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.data.MainRepository
 import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
 import com.zaus_app.moviefrumy.domain.Film
@@ -62,12 +63,7 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        AnimationHelper.performFragmentCircularRevealAnimation(
-            binding.favoritesFragment,
-            requireActivity(),
-            2
-        )
+        AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragment, requireActivity(), 2)
 
         if (MainRepository.favoritesList.isEmpty()) {
             binding.listIsEmptyText.visibility = View.VISIBLE
@@ -103,6 +99,7 @@ class FavoritesFragment : Fragment() {
             favotesDataBase = it as MutableList<Film>
         })
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
