@@ -1,18 +1,14 @@
 package com.zaus_app.moviefrumy.view.fragments
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
@@ -22,11 +18,8 @@ import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
-import android.widget.Toast
-import androidx.core.content.edit
-
 import androidx.recyclerview.widget.RecyclerView
-import com.zaus_app.moviefrumy.utils.PreferenceProvider
+
 
 
 class HomeFragment : Fragment() {
@@ -106,14 +99,14 @@ class HomeFragment : Fragment() {
 
        // initPullToRefresh()
 
-        binding.include.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    val visibleItemCount = binding.include.mainRecycler.layoutManager!!.childCount
-                    val totalItemCount = binding.include.mainRecycler.layoutManager!!.itemCount
+                    val visibleItemCount = binding.mainRecycler.layoutManager!!.childCount
+                    val totalItemCount = binding.mainRecycler.layoutManager!!.itemCount
                     val pastVisibleItemCount =
-                        (binding.include.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        (binding.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.doPagination(visibleItemCount, totalItemCount, pastVisibleItemCount)
                 }
             }
@@ -123,7 +116,7 @@ class HomeFragment : Fragment() {
 
     fun initRecycler() {
         //находим наш RV
-        binding.include.mainRecycler.apply {
+        binding.mainRecycler.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -141,7 +134,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initPullToRefresh() {
+   /* private fun initPullToRefresh() {
         //Вешаем слушатель, чтобы вызвался pull to refresh
         binding.include.pullToRefresh.setOnRefreshListener {
             //Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
@@ -151,7 +144,7 @@ class HomeFragment : Fragment() {
             //Убираем крутящееся колечко
             binding.include.pullToRefresh.isRefreshing = false
         }
-    }
+    } */
 
     fun updateData(newList: MutableList<Film>) {
         val oldList = filmsAdapter.getItems()
