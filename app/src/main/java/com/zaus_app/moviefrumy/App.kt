@@ -3,6 +3,9 @@ package com.zaus_app.moviefrumy
 import android.app.Application
 import com.zaus_app.moviefrumy.di.AppComponent
 import com.zaus_app.moviefrumy.di.DaggerAppComponent
+import com.zaus_app.moviefrumy.di.modules.DatabaseModule
+import com.zaus_app.moviefrumy.di.modules.DomainModule
+import com.zaus_app.moviefrumy.di.modules.RemoteModule
 
 
 class App : Application() {
@@ -12,7 +15,11 @@ class App : Application() {
         super.onCreate()
         instance = this
         //Создаем компонент
-        dagger = DaggerAppComponent.create()
+        dagger = DaggerAppComponent.builder()
+            .remoteModule(RemoteModule())
+            .databaseModule(DatabaseModule())
+            .domainModule(DomainModule(this))
+            .build()
     }
 
     companion object {

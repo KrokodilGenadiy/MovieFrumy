@@ -25,9 +25,13 @@ class HomeFragmentViewModel : ViewModel() {
         }
     }
 
+    fun getFilms() {
+        interactor.getFilmsFromApi(1, apiCallback)
+    }
+
     init {
         App.instance.dagger.injectHome(this)
-        interactor.getFilmsFromApi(1, apiCallback)
+        getFilms()
     }
 
     interface ApiCallback {

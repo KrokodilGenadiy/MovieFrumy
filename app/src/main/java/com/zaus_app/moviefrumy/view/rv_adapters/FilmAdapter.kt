@@ -48,6 +48,10 @@ class FilmAdapter(private val clickListener: OnItemClickListener) :
         this.items = list
     }
 
+    fun clearItems() {
+        this.items.clear()
+    }
+
     //Интерфейс для обработки кликов
     interface OnItemClickListener {
         fun click(film: Film)

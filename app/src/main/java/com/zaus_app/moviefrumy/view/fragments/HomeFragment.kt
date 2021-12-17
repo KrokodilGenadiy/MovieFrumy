@@ -1,5 +1,7 @@
 package com.zaus_app.moviefrumy.view.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,11 +23,10 @@ import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
 import android.widget.Toast
+import androidx.core.content.edit
 
 import androidx.recyclerview.widget.RecyclerView
-
-
-
+import com.zaus_app.moviefrumy.utils.PreferenceProvider
 
 
 class HomeFragment : Fragment() {
@@ -33,6 +34,7 @@ class HomeFragment : Fragment() {
         ViewModelProvider.NewInstanceFactory().create(HomeFragmentViewModel::class.java)
     }
     private var _binding: FragmentHomeBinding? = null
+    private var isRefreshing = false
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FilmAdapter
     private var filmsDataBase = mutableListOf<Film>()
@@ -41,7 +43,11 @@ class HomeFragment : Fragment() {
             //Если придет такое же значение то мы выходим из метода
             if (field == value) return
             //Если пришло другое значение, то кладем его в переменную
-            field = (field + value) as MutableList<Film>
+            if (isRefreshing) {
+                field = value
+            } else {
+                field = (field + value) as MutableList<Film>
+            }
             //Обновляем RV адаптер
             updateData(field)
         }
@@ -59,11 +65,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AnimationHelper.performFragmentCircularRevealAnimation(
-            binding.homeConstraintLayout,
-            requireActivity(),
-            1
-        )
+        AnimationHelper.performFragmentCircularRevealAnimation(binding.homeConstraintLayout, requireActivity(), 1)
 
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
@@ -95,20 +97,23 @@ class HomeFragment : Fragment() {
         })
 
         initRecycler()
+
         //Кладем нашу БД в RV
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner,  {
             filmsDataBase = it as MutableList<Film>
+            updateData(filmsDataBase)
         })
 
+       // initPullToRefresh()
 
-        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.include.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    val visibleItemCount = binding.mainRecycler.layoutManager!!.childCount
-                    val totalItemCount = binding.mainRecycler.layoutManager!!.itemCount
+                    val visibleItemCount = binding.include.mainRecycler.layoutManager!!.childCount
+                    val totalItemCount = binding.include.mainRecycler.layoutManager!!.itemCount
                     val pastVisibleItemCount =
-                        (binding.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        (binding.include.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.doPagination(visibleItemCount, totalItemCount, pastVisibleItemCount)
                 }
             }
@@ -118,7 +123,7 @@ class HomeFragment : Fragment() {
 
     fun initRecycler() {
         //находим наш RV
-        binding.mainRecycler.apply {
+        binding.include.mainRecycler.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -133,26 +138,20 @@ class HomeFragment : Fragment() {
             //Применяем декоратор для отступов
             val decorator = ItemDecorator(8)
             addItemDecoration(decorator)
-                // isNestedScrollingEnabled = false
         }
     }
 
-    /* private fun RecyclerView.initPagination() {
-         addOnScrollListener(object : RecyclerView.OnScrollListener() {
-             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                 if (dy > 0) {
-                     val visibleItemCount = recyclerView.layoutManager!!.childCount
-                     val totalItemCount = recyclerView.layoutManager!!.itemCount
-                     val pastVisibleItemCount = (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-                     viewModel.doPagination(
-                         visibleItemCount = visibleItemCount,
-                         totalItemCount = totalItemCount,
-                         pastVisibleItemCOunt = pastVisibleItemCount
-                     )
-                 }
-             }
-         })
-     } */
+    private fun initPullToRefresh() {
+        //Вешаем слушатель, чтобы вызвался pull to refresh
+        binding.include.pullToRefresh.setOnRefreshListener {
+            //Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
+            //filmsAdapter.clearItems()
+            //Делаем новый запрос фильмов на сервер
+            viewModel.getFilms()
+            //Убираем крутящееся колечко
+            binding.include.pullToRefresh.isRefreshing = false
+        }
+    }
 
     fun updateData(newList: MutableList<Film>) {
         val oldList = filmsAdapter.getItems()
