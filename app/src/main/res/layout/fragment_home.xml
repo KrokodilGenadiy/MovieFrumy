@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_constraint_layout"
-    android:visibility="invisible"
-    tools:visibility="visible"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_main"
     android:tag="home"
-    tools:context=".view.fragments.HomeFragment">
+    android:visibility="invisible"
+    tools:context=".view.fragments.HomeFragment"
+    tools:visibility="visible">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -27,13 +27,28 @@
             app:statusBarScrim="@android:color/transparent"
             app:toolbarId="@+id/toolbar">
 
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="0dp"
+                app:menu="@menu/toolbar"
+                style="@style/Widget.MaterialComponents.Toolbar"
+                android:fitsSystemWindows="true">
+
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layout_scrollFlags="scroll|enterAlways"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/background_search_view" />
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/background_search_view"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
 
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

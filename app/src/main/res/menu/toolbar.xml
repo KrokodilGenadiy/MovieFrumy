@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/settings"
-        android:title="@string/menu_settings_title"
-        android:icon="@drawable/ic_round_settings"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/filter_string_name"
+        android:icon="@drawable/ic_round_filter_list"
+        
+        app:showAsAction="always"/>
 </menu>
