@@ -2,9 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/settings"
+        android:id="@+id/filters"
         android:title="@string/filter_string_name"
-        android:icon="@drawable/ic_round_filter_list"
-        
+        android:icon="@drawable/ic_filter_icon"
         app:showAsAction="always"/>
 </menu>

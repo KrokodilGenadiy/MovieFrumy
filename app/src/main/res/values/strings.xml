@@ -6,10 +6,17 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home_title_text">Главная</string>
     <string name="list_is_empty">Список пуст!</string>
-    <string name="radio_button_popular">Популярные</string>
-    <string name="radio_button_top_rated">Топ</string>
-    <string name="radio_button_upcoming">Скоро</string>
-    <string name="radio_button_playing">В кинотеатрах</string>
-    <string name="radio_group_header">Подборка на главном экране:</string>
+    <string name="popular">Популярные</string>
+    <string name="top_rated">Топ</string>
+    <string name="upcoming">Скоро</string>
+    <string name="playing">В кинотеатрах</string>
+
+    <string name="radio_group_header">Подборка на главном экране</string>
+    <string-array name="selections">
+       <item>@string/popular</item>
+        <item>@string/top_rated</item>
+        <item>@string/upcoming</item>
+        <item>@string/playing</item>
+    </string-array>
     <string name="filter_string_name">Фильтр</string>
 </resources>

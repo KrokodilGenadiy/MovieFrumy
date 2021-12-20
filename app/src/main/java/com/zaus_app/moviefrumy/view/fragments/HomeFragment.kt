@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
@@ -18,8 +20,6 @@ import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
-import androidx.recyclerview.widget.RecyclerView
-
 
 
 class HomeFragment : Fragment() {
@@ -58,8 +58,15 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        AnimationHelper.performFragmentCircularRevealAnimation(binding.homeConstraintLayout, requireActivity(), 1)
 
+        AnimationHelper.performFragmentCircularRevealAnimation(
+            binding.homeConstraintLayout,
+            requireActivity(),
+            1
+        )
+
+
+        initToolbar()
         binding.searchView.setOnClickListener {
             binding.searchView.isIconified = false
         }
@@ -92,12 +99,12 @@ class HomeFragment : Fragment() {
         initRecycler()
 
         //Кладем нашу БД в RV
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner,  {
+        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
             filmsDataBase = it as MutableList<Film>
             updateData(filmsDataBase)
         })
 
-       // initPullToRefresh()
+        //initPullToRefresh()
 
         binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -134,17 +141,28 @@ class HomeFragment : Fragment() {
         }
     }
 
-   /* private fun initPullToRefresh() {
-        //Вешаем слушатель, чтобы вызвался pull to refresh
-        binding.include.pullToRefresh.setOnRefreshListener {
-            //Чистим адаптер(items нужно будет сделать паблик или создать для этого публичный метод)
-            //filmsAdapter.clearItems()
-            //Делаем новый запрос фильмов на сервер
-            viewModel.getFilms()
-            //Убираем крутящееся колечко
-            binding.include.pullToRefresh.isRefreshing = false
+    /* private fun initPullToRefresh() {
+         //Вешаем слушатель, чтобы вызвался pull to refresh
+         binding.include.pullToRefresh.setOnRefreshListener {
+             isRefreshing = true
+             //filmsAdapter.clearItems()
+             //Делаем новый запрос фильмов на сервер
+             viewModel.getFilms()
+             //Убираем крутящееся колечко
+             binding.include.pullToRefresh.isRefreshing = false
+         }
+     } */
+
+    fun initToolbar() {
+        binding.toolbarMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.filters -> {
+                    true
+                }
+                else -> false
+            }
         }
-    } */
+    }
 
     fun updateData(newList: MutableList<Film>) {
         val oldList = filmsAdapter.getItems()

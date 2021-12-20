@@ -13,6 +13,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
+        android:translationZ="2dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/design_default_color_primary_dark">
@@ -28,12 +29,13 @@
             app:toolbarId="@+id/toolbar">
 
             <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar_menu"
+                style="@style/Widget.MaterialComponents.Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
                 android:minHeight="0dp"
-                app:menu="@menu/toolbar"
-                style="@style/Widget.MaterialComponents.Toolbar"
-                android:fitsSystemWindows="true">
+                app:menu="@menu/toolbar">
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/search_view"
@@ -41,7 +43,6 @@
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="10dp"
-
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/background_search_view"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -49,8 +50,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </com.google.android.material.appbar.MaterialToolbar>
-
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -65,3 +64,4 @@
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
