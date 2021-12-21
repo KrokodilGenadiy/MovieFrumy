@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
-import com.zaus_app.moviefrumy.topsheet_behavior.TopSheetDialog
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
@@ -22,8 +21,6 @@ import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
-import com.orhanobut.dialogplus.DialogPlus
-import com.orhanobut.dialogplus.ViewHolder
 
 
 class HomeFragment : Fragment() {
