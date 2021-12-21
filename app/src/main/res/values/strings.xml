@@ -19,4 +19,5 @@
         <item>@string/playing</item>
     </string-array>
     <string name="filter_string_name">Фильтр</string>
+    <string name="filter_header">Фильтры</string>
 </resources>

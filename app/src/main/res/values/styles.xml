@@ -12,4 +12,8 @@
         <attr name="stroke" format="float" />
     </declare-styleable>
 
+    <style name="TopSheet_DialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_out_from_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_back_to_top</item>
+    </style>
 </resources>

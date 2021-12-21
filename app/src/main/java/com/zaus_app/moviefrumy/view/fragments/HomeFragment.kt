@@ -1,6 +1,7 @@
 package com.zaus_app.moviefrumy.view.fragments
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.topsheet_behavior.TopSheetDialog
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
@@ -20,6 +22,8 @@ import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
+import com.orhanobut.dialogplus.DialogPlus
+import com.orhanobut.dialogplus.ViewHolder
 
 
 class HomeFragment : Fragment() {
@@ -38,6 +42,7 @@ class HomeFragment : Fragment() {
             //Если пришло другое значение, то кладем его в переменную
             if (isRefreshing) {
                 field = value
+                isRefreshing = false
             } else {
                 field = (field + value) as MutableList<Film>
             }
@@ -141,22 +146,19 @@ class HomeFragment : Fragment() {
         }
     }
 
-    /* private fun initPullToRefresh() {
-         //Вешаем слушатель, чтобы вызвался pull to refresh
-         binding.include.pullToRefresh.setOnRefreshListener {
+    fun initRefresh() {
              isRefreshing = true
-             //filmsAdapter.clearItems()
              //Делаем новый запрос фильмов на сервер
              viewModel.getFilms()
-             //Убираем крутящееся колечко
-             binding.include.pullToRefresh.isRefreshing = false
-         }
-     } */
+            binding.mainRecycler.layoutManager?.scrollToPosition(0)
+     }
 
     fun initToolbar() {
         binding.toolbarMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.filters -> {
+                    val bottomSheetFragment = BottomSheetFragment(this)
+                    bottomSheetFragment.show(requireActivity().supportFragmentManager,"BottomSheet")
                     true
                 }
                 else -> false
