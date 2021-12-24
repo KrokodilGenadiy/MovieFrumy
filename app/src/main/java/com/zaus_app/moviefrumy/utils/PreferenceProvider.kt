@@ -3,7 +3,7 @@ package com.zaus_app.moviefrumy.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import java.util.*
+
 
 class PreferenceProvider(context: Context) {
     //Нам нужен контекст приложения
