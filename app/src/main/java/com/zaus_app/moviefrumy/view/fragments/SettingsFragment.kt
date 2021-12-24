@@ -26,23 +26,23 @@ class SettingsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSettingsBinding.inflate(layoutInflater, container, false)
-        val selections = resources.getStringArray(R.array.selections)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-        binding.autoCompleteTextView.setAdapter(arrayAdapter)
+        val languages = resources.getStringArray(R.array.languages)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.languege_selection, languages)
+        binding.languageSelection.setAdapter(arrayAdapter)
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        val selections = resources.getStringArray(R.array.selections)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-        binding.autoCompleteTextView.setAdapter(arrayAdapter)
+        val languages = resources.getStringArray(R.array.languages)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.languege_selection, languages)
+        binding.languageSelection.setAdapter(arrayAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Подключаем анимации и передаем номер позиции у кнопки в нижнем меню
-        val selections = resources.getStringArray(R.array.selections)
+        val selections = resources.getStringArray(R.array.languages)
         var arrayAdapter: ArrayAdapter<String>
         AnimationHelper.performFragmentCircularRevealAnimation(
             binding.settingsFragmentRoot,
@@ -50,50 +50,32 @@ class SettingsFragment : Fragment() {
             4
         )
         //Слушаем, какой у нас сейчас выбран вариант в настройках
-        viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner, {
+        viewModel.languagePropertyLiveData.observe(viewLifecycleOwner, {
             when (it) {
-                POPULAR_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.popular)
+                RUSSIAN_LANGUAGE -> {
+                    binding.languageSelection.setText(R.string.russian)
                     arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
+                        ArrayAdapter(requireContext(), R.layout.languege_selection, selections)
+                    binding.languageSelection.setAdapter(arrayAdapter)
                 }
-                TOP_RATED_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.top_rated)
+                ENGLISH_LANGUAGE -> {
+                    binding.languageSelection.setText(R.string.english)
                     arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
-                }
-                UPCOMING_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.upcoming)
-                    arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
-                }
-                NOW_PLAYING_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.playing)
-                    arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
+                        ArrayAdapter(requireContext(), R.layout.languege_selection, selections)
+                    binding.languageSelection.setAdapter(arrayAdapter)
                 }
             }
         })
 
         //Слушатель для отправки нового состояния в настройк
-        binding.autoCompleteTextView.onItemClickListener =
+        binding.languageSelection.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
                 when (parent.getItemAtPosition(position).toString()) {
-                    resources.getString(R.string.popular) -> viewModel.putCategoryProperty(
-                        POPULAR_CATEGORY
+                    resources.getString(R.string.russian) -> viewModel.putLanguageProperty(
+                        RUSSIAN_LANGUAGE
                     )
-                    resources.getString(R.string.top_rated) -> viewModel.putCategoryProperty(
-                        TOP_RATED_CATEGORY
-                    )
-                    resources.getString(R.string.upcoming) -> viewModel.putCategoryProperty(
-                        UPCOMING_CATEGORY
-                    )
-                    resources.getString(R.string.playing) -> viewModel.putCategoryProperty(
-                        NOW_PLAYING_CATEGORY
+                    resources.getString(R.string.english) -> viewModel.putLanguageProperty(
+                        ENGLISH_LANGUAGE
                     )
                 }
             }
@@ -101,9 +83,7 @@ class SettingsFragment : Fragment() {
     }
 
     companion object {
-        private const val POPULAR_CATEGORY = "popular"
-        private const val TOP_RATED_CATEGORY = "top_rated"
-        private const val UPCOMING_CATEGORY = "upcoming"
-        private const val NOW_PLAYING_CATEGORY = "now_playing"
+        private const val RUSSIAN_LANGUAGE = "ru-RU"
+        private const val ENGLISH_LANGUAGE = "en-EN"
     }
 }

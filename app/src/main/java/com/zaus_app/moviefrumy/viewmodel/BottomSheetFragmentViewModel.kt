@@ -6,26 +6,27 @@ import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.domain.Interactor
 import javax.inject.Inject
 
-class SettingsFragmentViewModel : ViewModel() {
+class BottomSheetFragmentViewModel : ViewModel() {
     //Инжектим интерактор
     @Inject
     lateinit var interactor: Interactor
-    val languagePropertyLiveData: MutableLiveData<String> = MutableLiveData()
+    val categoryPropertyLifeData: MutableLiveData<String> = MutableLiveData()
 
     init {
-        App.instance.dagger.injectSettings(this)
+        App.instance.dagger.injectBottomSheet(this)
         //Получаем категорию при инициализации, чтобы у нас сразу подтягивалась категория
-        getLanguageProperty()
+        getCategoryProperty()
     }
 
-    private fun getLanguageProperty() {
-        languagePropertyLiveData.value = interactor.getDefaultLanguageFromPreferences()
+    private fun getCategoryProperty() {
+        //Кладем категорию в LiveData
+        categoryPropertyLifeData.value = interactor.getDefaultCategoryFromPreferences()
     }
 
-    fun putLanguageProperty(language: String) {
+    fun putCategoryProperty(category: String) {
         //Сохраняем в настройки
-        interactor.saveDefaultLanguageToPreferences(language)
+        interactor.saveDefaultCategoryToPreferences(category)
         //И сразу забираем, чтобы сохранить состояние в модели
-        getLanguageProperty()
+        getCategoryProperty()
     }
 }

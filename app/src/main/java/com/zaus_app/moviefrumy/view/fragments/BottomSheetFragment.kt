@@ -11,12 +11,13 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.databinding.SheetContentBinding
+import com.zaus_app.moviefrumy.viewmodel.BottomSheetFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.SettingsFragmentViewModel
 
 class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragment() {
     private val homeFragment = homeFragment
     private val viewModel by lazy {
-        ViewModelProvider.NewInstanceFactory().create(SettingsFragmentViewModel::class.java)
+        ViewModelProvider.NewInstanceFactory().create(BottomSheetFragmentViewModel::class.java)
     }
     private lateinit var binding: SheetContentBinding
     override fun onCreateView(
@@ -26,7 +27,18 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
     ): View {
         val inflater = LayoutInflater.from(requireContext())
         binding = SheetContentBinding.inflate(inflater)
+        print(binding.root.height)
+        val selections = resources.getStringArray(R.array.selections)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
+        binding.autoCompleteTextView.setAdapter(arrayAdapter)
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val languages = resources.getStringArray(R.array.selections)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_selections, languages)
+        binding.autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,6 +46,7 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
         //Подключаем анимации и передаем номер позиции у кнопки в нижнем меню
         val selections = resources.getStringArray(R.array.selections)
         var arrayAdapter: ArrayAdapter<String>
+
         //Слушаем, какой у нас сейчас выбран вариант в настройках
         viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner) {
             when (it) {

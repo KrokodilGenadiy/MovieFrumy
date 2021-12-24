@@ -3,6 +3,7 @@ package com.zaus_app.moviefrumy.di
 import com.zaus_app.moviefrumy.di.modules.DatabaseModule
 import com.zaus_app.moviefrumy.di.modules.DomainModule
 import com.zaus_app.moviefrumy.di.modules.RemoteModule
+import com.zaus_app.moviefrumy.viewmodel.BottomSheetFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.FavoriteFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.SettingsFragmentViewModel
@@ -24,4 +25,5 @@ interface AppComponent {
     fun injectFavorites(favoritesFragmentViewModel: FavoriteFragmentViewModel)
     //метод для того, чтобы появилась возможность внедрять зависимости в SettingsFragmentViewModel
     fun injectSettings(settingsFragmentViewModel: SettingsFragmentViewModel)
+    fun injectBottomSheet(bottomSheetFragmentViewModel: BottomSheetFragmentViewModel)
 }
