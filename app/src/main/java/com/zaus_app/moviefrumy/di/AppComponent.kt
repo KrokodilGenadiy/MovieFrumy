@@ -21,9 +21,9 @@ import javax.inject.Singleton
 )
 interface AppComponent {
     //метод для того, чтобы появилась внедрять зависимости в HomeFragmentViewModel
-    fun injectHome(homeFragmentViewModel: HomeFragmentViewModel)
-    fun injectFavorites(favoritesFragmentViewModel: FavoriteFragmentViewModel)
+    fun inject(homeFragmentViewModel: HomeFragmentViewModel)
+    fun inject(favoritesFragmentViewModel: FavoriteFragmentViewModel)
     //метод для того, чтобы появилась возможность внедрять зависимости в SettingsFragmentViewModel
-    fun injectSettings(settingsFragmentViewModel: SettingsFragmentViewModel)
-    fun injectBottomSheet(bottomSheetFragmentViewModel: BottomSheetFragmentViewModel)
+    fun inject(settingsFragmentViewModel: SettingsFragmentViewModel)
+    fun inject(bottomSheetFragmentViewModel: BottomSheetFragmentViewModel)
 }

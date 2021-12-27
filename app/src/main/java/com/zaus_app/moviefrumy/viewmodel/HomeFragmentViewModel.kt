@@ -23,6 +23,7 @@ class HomeFragmentViewModel : ViewModel() {
         }
 
         override fun onFailure() {
+            filmsListLiveData.postValue(interactor.getFilmsFromDB())
         }
     }
 
@@ -31,7 +32,7 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     init {
-        App.instance.dagger.injectHome(this)
+        App.instance.dagger.inject(this)
         getFilms()
     }
 

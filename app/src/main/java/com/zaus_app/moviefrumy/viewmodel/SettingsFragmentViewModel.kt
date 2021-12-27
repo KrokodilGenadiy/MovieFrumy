@@ -13,7 +13,7 @@ class SettingsFragmentViewModel : ViewModel() {
     val languagePropertyLiveData: MutableLiveData<String> = MutableLiveData()
 
     init {
-        App.instance.dagger.injectSettings(this)
+        App.instance.dagger.inject(this)
         //Получаем категорию при инициализации, чтобы у нас сразу подтягивалась категория
         getLanguageProperty()
     }

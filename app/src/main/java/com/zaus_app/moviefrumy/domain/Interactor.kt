@@ -3,6 +3,7 @@ package com.zaus_app.moviefrumy.domain
 import com.zaus_app.moviefrumy.data.API
 import com.zaus_app.moviefrumy.data.MainRepository
 import com.zaus_app.moviefrumy.data.TmdbApi
+import com.zaus_app.moviefrumy.data.db.DatabaseRepository
 import com.zaus_app.moviefrumy.data.entity.TmdbResults
 import com.zaus_app.moviefrumy.utils.Converter
 import com.zaus_app.moviefrumy.utils.PreferenceProvider
@@ -11,13 +12,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Interactor(private val repo: MainRepository, private val retrofitService: TmdbApi, private val preferences: PreferenceProvider) {
+class Interactor(private val databaseRepository: DatabaseRepository,private val repo: MainRepository, private val retrofitService: TmdbApi, private val preferences: PreferenceProvider) {
     fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback) {
         //Метод getDefaultCategoryFromPreferences() будет нам получать при каждом запросе нужный нам список фильмов
         retrofitService.getFilms(getDefaultCategoryFromPreferences(), API.KEY, getDefaultLanguageFromPreferences(), page).enqueue(object : Callback<TmdbResults> {
             override fun onResponse(call: Call<TmdbResults>, response: Response<TmdbResults>) {
-                //При успехе мы вызываем метод передаем onSuccess и в этот коллбэк список фильмов
-                callback.onSuccess(Converter.convertApiListToDTOList(response.body()?.tmdbFilms))
+                //При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк список фильмов
+                val list = Converter.convertApiListToDTOList(response.body()?.tmdbFilms)
+                //Кладем фильмы в бд
+                list.forEach {
+                    databaseRepository.putToDb(film = it)
+                }
+                callback.onSuccess(list)
             }
 
             override fun onFailure(call: Call<TmdbResults>, t: Throwable) {
@@ -37,4 +43,6 @@ class Interactor(private val repo: MainRepository, private val retrofitService: 
     //Метод для получения настроек
     fun getDefaultCategoryFromPreferences() = preferences.getDefaultCategory()
     fun getDefaultLanguageFromPreferences() = preferences.getDefaultLanguage()
+
+    fun getFilmsFromDB(): List<Film> = databaseRepository.getAllFromDB()
 }

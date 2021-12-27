@@ -13,7 +13,7 @@ class BottomSheetFragmentViewModel : ViewModel() {
     val categoryPropertyLifeData: MutableLiveData<String> = MutableLiveData()
 
     init {
-        App.instance.dagger.injectBottomSheet(this)
+        App.instance.dagger.inject(this)
         //Получаем категорию при инициализации, чтобы у нас сразу подтягивалась категория
         getCategoryProperty()
     }

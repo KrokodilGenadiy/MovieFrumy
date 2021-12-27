@@ -15,7 +15,7 @@ class FavoriteFragmentViewModel : ViewModel() {
     lateinit var interactor: Interactor
 
     init {
-        App.instance.dagger.injectFavorites(this)
+        App.instance.dagger.inject(this)
         val films = interactor.getFavoriteFilms()
         filmsListLiveData.postValue(films)
     }
