@@ -1,15 +1,10 @@
 package com.zaus_app.moviefrumy.view.rv_viewholders
 
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.ApiConstants
 import com.zaus_app.moviefrumy.databinding.FilmItemBinding
-import com.zaus_app.moviefrumy.domain.Film
-import com.zaus_app.moviefrumy.view.customviews.RatingDonutView
+import com.zaus_app.moviefrumy.data.entity.Film
 
 //В конструктор класс передается layout, который мы создали(film_item.xml)
 class FilmViewHolder(binding: FilmItemBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -1,9 +1,7 @@
 package com.zaus_app.moviefrumy.domain
 
-import com.zaus_app.moviefrumy.data.API
-import com.zaus_app.moviefrumy.data.MainRepository
-import com.zaus_app.moviefrumy.data.TmdbApi
-import com.zaus_app.moviefrumy.data.db.DatabaseRepository
+import com.zaus_app.moviefrumy.data.*
+import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.data.entity.TmdbResults
 import com.zaus_app.moviefrumy.utils.Converter
 import com.zaus_app.moviefrumy.utils.PreferenceProvider
@@ -12,7 +10,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class Interactor(private val databaseRepository: DatabaseRepository,private val repo: MainRepository, private val retrofitService: TmdbApi, private val preferences: PreferenceProvider) {
+class Interactor(private val repo: MainRepository,private val favoritesRepo: FavoritesRepository, private val retrofitService: TmdbApi, private val preferences: PreferenceProvider) {
     fun getFilmsFromApi(page: Int, callback: HomeFragmentViewModel.ApiCallback) {
         //Метод getDefaultCategoryFromPreferences() будет нам получать при каждом запросе нужный нам список фильмов
         retrofitService.getFilms(getDefaultCategoryFromPreferences(), API.KEY, getDefaultLanguageFromPreferences(), page).enqueue(object : Callback<TmdbResults> {
@@ -21,7 +19,7 @@ class Interactor(private val databaseRepository: DatabaseRepository,private val 
                 val list = Converter.convertApiListToDTOList(response.body()?.tmdbFilms)
                 //Кладем фильмы в бд
                 list.forEach {
-                    databaseRepository.putToDb(film = it)
+                    repo.putToDb(list)
                 }
                 callback.onSuccess(list)
             }
@@ -32,7 +30,11 @@ class Interactor(private val databaseRepository: DatabaseRepository,private val 
             }
         })
     }
-    fun getFavoriteFilms(): MutableList<Film> = repo.favoritesList
+    fun getFavoriteFilms(): MutableList<Film> = favoritesRepo.favoritesList
+
+    fun addToFavorites(film: Film) = favoritesRepo.favoritesList.add(film)
+
+    fun removeFromFavorites(film: Film) = favoritesRepo.favoritesList.remove(film)
     //Метод для сохранения настроек
     fun saveDefaultCategoryToPreferences(category: String) {
         preferences.saveDefaultCategory(category)
@@ -44,5 +46,5 @@ class Interactor(private val databaseRepository: DatabaseRepository,private val 
     fun getDefaultCategoryFromPreferences() = preferences.getDefaultCategory()
     fun getDefaultLanguageFromPreferences() = preferences.getDefaultLanguage()
 
-    fun getFilmsFromDB(): List<Film> = databaseRepository.getAllFromDB()
+    fun getFilmsFromDB(): List<Film> = repo.getAllFromDB()
 }

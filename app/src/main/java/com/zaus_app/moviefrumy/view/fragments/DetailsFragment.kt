@@ -5,21 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.ApiConstants
-import com.zaus_app.moviefrumy.data.MainRepository
-import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
-import com.zaus_app.moviefrumy.domain.Film
-import com.zaus_app.moviefrumy.view.MainActivity
+import com.zaus_app.moviefrumy.data.entity.Film
+import com.zaus_app.moviefrumy.viewmodel.DetailsFragmentViewModel
 
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by lazy {
+        ViewModelProvider.NewInstanceFactory().create(DetailsFragmentViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,14 +45,14 @@ class DetailsFragment : Fragment() {
                     .into(binding.detailsFabFavorites)
                // binding.detailsFabFavorites.setImageResource(R.drawable.ic_round_favorite)
                 film.isInFavorites = true
-                MainRepository.favoritesList.add(film)
+                viewModel.interactor.addToFavorites(film)
             } else {
                 Glide.with( binding.detailsFabFavorites)
                     .load(R.drawable.ic_baseline_favorite_border_24)
                     .into(binding.detailsFabFavorites)
              //   binding.detailsFabFavorites.setImageResource(R.drawable.ic_baseline_favorite_border_24)
                 film.isInFavorites = false
-                MainRepository.favoritesList.remove(film)
+                viewModel.interactor.removeFromFavorites(film)
             }
         }
 

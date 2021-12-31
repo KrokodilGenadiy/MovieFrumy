@@ -1,13 +1,12 @@
 package com.zaus_app.moviefrumy.view
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
-import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.view.fragments.*
 
 class MainActivity : AppCompatActivity() {

@@ -2,10 +2,10 @@ package com.zaus_app.moviefrumy.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zaus_app.moviefrumy.App
-import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.domain.Interactor
+import java.util.concurrent.Executors
 import javax.inject.Inject
 
 
@@ -23,7 +23,9 @@ class HomeFragmentViewModel : ViewModel() {
         }
 
         override fun onFailure() {
-            filmsListLiveData.postValue(interactor.getFilmsFromDB())
+            Executors.newSingleThreadExecutor().execute {
+                filmsListLiveData.postValue(interactor.getFilmsFromDB())
+            }
         }
     }
 

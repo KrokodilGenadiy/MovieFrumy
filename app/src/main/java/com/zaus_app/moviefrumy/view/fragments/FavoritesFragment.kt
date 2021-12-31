@@ -8,10 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.zaus_app.moviefrumy.App
-import com.zaus_app.moviefrumy.data.MainRepository
 import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
-import com.zaus_app.moviefrumy.domain.Film
+import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FavoritesAdapter
@@ -65,7 +63,7 @@ class FavoritesFragment : Fragment() {
 
         AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragment, requireActivity(), 2)
 
-        if (MainRepository.favoritesList.isEmpty()) {
+        if (viewModel.interactor.getFavoriteFilms().isEmpty()) {
             binding.listIsEmptyText.visibility = View.VISIBLE
             binding.lottieAnim.visibility = View.VISIBLE
         } else {
