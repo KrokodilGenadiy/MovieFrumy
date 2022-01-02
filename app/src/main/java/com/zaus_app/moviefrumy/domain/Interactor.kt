@@ -18,9 +18,7 @@ class Interactor(private val repo: MainRepository,private val favoritesRepo: Fav
                 //При успехе мы вызываем метод, передаем onSuccess и в этот коллбэк список фильмов
                 val list = Converter.convertApiListToDTOList(response.body()?.tmdbFilms)
                 //Кладем фильмы в бд
-                list.forEach {
-                    repo.putToDb(list)
-                }
+                repo.putToDb(list)
                 callback.onSuccess(list)
             }
 

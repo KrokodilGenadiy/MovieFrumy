@@ -5,14 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.zaus_app.moviefrumy.R
-import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.data.entity.Film
+import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
@@ -104,6 +106,9 @@ class HomeFragment : Fragment() {
             filmsDataBase = it as MutableList<Film>
             updateData(filmsDataBase)
         })
+        viewModel.showProgressBar.observe(viewLifecycleOwner, Observer<Boolean> {
+            binding.progressBar.isVisible = it
+        })
 
         //initPullToRefresh()
 
@@ -143,18 +148,21 @@ class HomeFragment : Fragment() {
     }
 
     fun initRefresh() {
-             isRefreshing = true
-             //Делаем новый запрос фильмов на сервер
-             viewModel.getFilms()
-            binding.mainRecycler.layoutManager?.scrollToPosition(0)
-     }
+        isRefreshing = true
+        //Делаем новый запрос фильмов на сервер
+        viewModel.getFilms()
+        binding.mainRecycler.layoutManager?.scrollToPosition(0)
+    }
 
     fun initToolbar() {
         binding.toolbarMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.filters -> {
                     val bottomSheetFragment = BottomSheetFragment(this)
-                    bottomSheetFragment.show(requireActivity().supportFragmentManager,"BottomSheet")
+                    bottomSheetFragment.show(
+                        requireActivity().supportFragmentManager,
+                        "BottomSheet"
+                    )
                     true
                 }
                 else -> false
