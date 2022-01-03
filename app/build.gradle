@@ -88,4 +88,8 @@ dependencies {
     def room_version = "2.4.0"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Gradle dependency on Shimmer for Android
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
 }

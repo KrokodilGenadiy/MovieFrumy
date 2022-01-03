@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -105,16 +106,27 @@ class HomeFragment : Fragment() {
             updateData(filmsDataBase)
         })
 
+        viewModel.showShimmering.observe(viewLifecycleOwner, Observer<Boolean> {
+            if (it) {
+                binding.include.shimmerLayout.visibility = View.VISIBLE
+                binding.include.shimmerLayout.startShimmer()
+            } else {
+                binding.include.shimmerLayout.stopShimmer()
+                binding.include.shimmerLayout.visibility = View.GONE
+            }
+
+        })
+
         //initPullToRefresh()
 
-        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.include.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    val visibleItemCount = binding.mainRecycler.layoutManager!!.childCount
-                    val totalItemCount = binding.mainRecycler.layoutManager!!.itemCount
+                    val visibleItemCount = binding.include.mainRecycler.layoutManager!!.childCount
+                    val totalItemCount = binding.include.mainRecycler.layoutManager!!.itemCount
                     val pastVisibleItemCount =
-                        (binding.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        (binding.include.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.doPagination(visibleItemCount, totalItemCount, pastVisibleItemCount)
                 }
             }
@@ -124,7 +136,7 @@ class HomeFragment : Fragment() {
 
     fun initRecycler() {
         //находим наш RV
-        binding.mainRecycler.apply {
+        binding.include.mainRecycler.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -146,7 +158,7 @@ class HomeFragment : Fragment() {
              isRefreshing = true
              //Делаем новый запрос фильмов на сервер
              viewModel.getFilms()
-            binding.mainRecycler.layoutManager?.scrollToPosition(0)
+            binding.include.mainRecycler.layoutManager?.scrollToPosition(0)
      }
 
     fun initToolbar() {

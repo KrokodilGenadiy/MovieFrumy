@@ -53,14 +53,9 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/main_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:nestedScrollingEnabled="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:listitem="@layout/film_item" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_scrolling"/>
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

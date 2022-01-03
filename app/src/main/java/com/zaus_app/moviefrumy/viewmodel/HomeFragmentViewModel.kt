@@ -11,6 +11,7 @@ import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
     val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
+    val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
     //Инициализируем интерактор
     private var currentPage = 1
     //Инициализируем интерактор
@@ -19,10 +20,12 @@ class HomeFragmentViewModel : ViewModel() {
 
     private val apiCallback = object : ApiCallback {
         override fun onSuccess(films: List<Film>) {
+            showShimmering.postValue(false)
             filmsListLiveData.postValue(films)
         }
 
         override fun onFailure() {
+            showShimmering.postValue(false)
             Executors.newSingleThreadExecutor().execute {
                 filmsListLiveData.postValue(interactor.getFilmsFromDB())
             }
@@ -30,6 +33,7 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     fun getFilms() {
+        showShimmering.postValue(true)
         interactor.getFilmsFromApi(1, apiCallback)
     }
 
