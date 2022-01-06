@@ -47,7 +47,6 @@ class PreferenceProvider(context: Context) {
         private const val KEY_FIRST_LAUNCH = "first_launch"
         private const val KEY_DEFAULT_CATEGORY = "default_category"
         private const val DEFAULT_CATEGORY = "popular"
-
         private const val KEY_DEFAULT_LANGUAGE = "default_language"
         private const val DEFAULT_LANGUAGE = "ru-RU"
     }

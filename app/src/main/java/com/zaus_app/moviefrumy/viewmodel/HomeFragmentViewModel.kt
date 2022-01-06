@@ -47,8 +47,8 @@ class HomeFragmentViewModel : ViewModel() {
         fun onFailure()
     }
 
-    fun doPagination(visibleItemCount: Int,totalItemCount: Int,pastVisibleItemCOunt: Int) {
-        if ((visibleItemCount+pastVisibleItemCOunt) >= totalItemCount -2) {
+    fun doPagination(visibleItemCount: Int,totalItemCount: Int,pastVisibleItemCount: Int) {
+        if ((visibleItemCount+pastVisibleItemCount) >= totalItemCount -2) {
             val page = ++currentPage
             interactor.getFilmsFromApi(page,apiCallback)
         }
