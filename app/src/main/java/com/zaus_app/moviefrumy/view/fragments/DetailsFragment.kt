@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.ApiConstants
+import com.zaus_app.moviefrumy.data.GenreList
 import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.viewmodel.DetailsFragmentViewModel
@@ -83,6 +84,11 @@ class DetailsFragment : Fragment() {
             .into(binding.detailsPoster)
         //Устанавливаем описание
         binding.detailsDescription.text = film.description
+        var genreText = ""
+        for (genre in film.genres) {
+            genreText = genreText+GenreList.genres.get(genre)+" "
+        }
+        binding.genres.text = genreText
         //Устанавиливаем значок любимого
         binding.detailsFabFavorites.setImageResource(
             if (film.isInFavorites) R.drawable.ic_round_favorite

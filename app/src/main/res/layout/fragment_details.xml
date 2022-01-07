@@ -89,6 +89,16 @@
                 tools:text="Title" />
 
             <TextView
+                android:id="@+id/genres"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                android:text="TEST"
+                android:textSize="25dp"/>
+
+            <TextView
                 android:id="@+id/details_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -100,7 +110,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title"
+                app:layout_constraintTop_toBottomOf="@id/genres"
                 tools:targetApi="o"
                 tools:text="@tools:sample/lorem/random" />
 
