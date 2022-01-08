@@ -2,65 +2,155 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="600dp"
+    android:background="@android:color/transparent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
-        android:padding="10dp"
-        android:id="@+id/filter_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:id="@+id/drag_bar"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/filter_header"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <LinearLayout
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/filter_header"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="@color/colorPrimary"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <FrameLayout
+            android:layout_width="60dp"
+            android:layout_height="8dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/all_rounded_corners_background" />
+    </RelativeLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:padding="10dp"
-        android:id="@+id/selections"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="32dp"
-        android:hint="@string/radio_group_header"
+        android:background="@drawable/rounded_top_corners"
+        app:layout_constraintTop_toBottomOf="@+id/drag_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-       app:layout_constraintTop_toBottomOf="@id/divider">
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextView"
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/filter_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="@string/filter_header"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:inputType="none"
-            android:text="@string/popular" />
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/filter_header"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:layout_margin="8dp"
+                android:textStyle="bold"
+                android:textSize="25sp"
+                android:text="@string/radio_group_header"/>
 
-    <Button
-        android:padding="10dp"
-        android:id="@+id/apply"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/selections"
-        android:text="@string/apply"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"/>
+            <RadioButton
+                android:id="@+id/radio_popular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_margin="16dp"
+                android:layoutDirection="rtl"
+                android:text="@string/radio_button_popular"
+                android:textAlignment="textStart"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/div_1"
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal" />
+            <RadioButton
+                android:id="@+id/radio_top_rated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/radio_button_top_rated"
+                android:layoutDirection="rtl"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/div_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:background="@color/colorPrimary"
+                android:layout_marginEnd="10dp" />
+            <RadioButton
+                android:id="@+id/radio_upcoming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/radio_button_upcoming"
+                android:layoutDirection="rtl"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:id="@+id/div_3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:orientation="horizontal"
+                android:layout_marginStart="10dp"
+                android:background="@color/colorPrimary"
+                android:layout_marginEnd="10dp" />
+            <RadioButton
+                android:id="@+id/radio_now_playing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="@string/radio_button_playing"
+                android:layoutDirection="rtl"
+                android:textAlignment="textStart"
+                android:layout_gravity="start"
+                android:textSize="22sp"
+                android:textStyle="bold"/>
+        </RadioGroup>
+
+        <Button
+            android:padding="10dp"
+            android:id="@+id/apply"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/radio_group"
+            android:text="@string/apply"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

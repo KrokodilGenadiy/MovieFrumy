@@ -5,11 +5,11 @@ import androidx.room.TypeConverter
 class RoomConverter {
     @TypeConverter
     fun fromListOfIntsToString(list: List<Int>): String {
-        return list.joinToString("")
+        return list.joinToString(",")
     }
 
     @TypeConverter
     fun fromStringTOListOfInts(str: String): List<Int> {
-        return str.map { it.digitToInt() }
+        return str.split(",").toTypedArray().map { it.toInt() }
     }
 }
