@@ -16,7 +16,7 @@
         android:translationZ="2dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/design_default_color_primary_dark">
+        android:background="@color/colorPrimaryDark">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/toolbar_layout"

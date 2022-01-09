@@ -17,7 +17,7 @@
         app:showAsAction="withText"/>
     <item
         android:id="@+id/settings"
-        android:icon="@drawable/ic_round_settings"
+        android:icon="@drawable/anim_settings_icon"
         android:title="@string/menu_settings_title"
         app:showAsAction="withText"/>
 </menu>

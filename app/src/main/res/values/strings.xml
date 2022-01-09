@@ -13,10 +13,10 @@
     <string name="russian">Russian</string>
     <string name="menu_settings_title_text">Настройки</string>
     <string name="radio_button_popular">Популярные</string>
-    <string name="radio_button_top_rated">Топ</string>
-    <string name="radio_button_upcoming">Скоро</string>
+    <string name="radio_button_top_rated">Лучшие</string>
+    <string name="radio_button_upcoming">Скоро в кино</string>
     <string name="radio_button_playing">В кинотеатрах</string>
-    <string name="radio_group_header">Подборка на главном экране:</string>
+    <string name="radio_group_header">Показать сначало</string>
 
     <string name="languages_selection_header">Выбор языка</string>
     <string-array name="languages">
