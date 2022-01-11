@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zaus_app.moviefrumy.R
@@ -40,7 +41,7 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.genresList.apply {
+        binding.include.genresList.apply {
             genreAdapter = GenreAdapter(object : GenreAdapter.OnItemClickListener{
                 override fun click(genre: Genre) {
                   Toast.makeText(requireContext(),"Clicked!",Toast.LENGTH_SHORT).show()
@@ -48,21 +49,23 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
             })
             //Присваиваем адаптер
             adapter = genreAdapter
+
+            layoutManager = GridLayoutManager(requireContext(), 5)
         }
         //Кладем нашу БД в RV
         genreAdapter.items = GenreList.genrelist
         //Слушаем, какой у нас сейчас выбран вариант в настройках
         viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner, Observer<String> {
             when(it) {
-                POPULAR_CATEGORY -> binding.radioGroup.check(R.id.radio_popular)
-                TOP_RATED_CATEGORY -> binding.radioGroup.check(R.id.radio_top_rated)
-                UPCOMING_CATEGORY -> binding.radioGroup.check(R.id.radio_upcoming)
-                NOW_PLAYING_CATEGORY -> binding.radioGroup.check(R.id.radio_now_playing)
+                POPULAR_CATEGORY -> binding.include.radioGroup.check(R.id.radio_popular)
+                TOP_RATED_CATEGORY -> binding.include.radioGroup.check(R.id.radio_top_rated)
+                UPCOMING_CATEGORY -> binding.include.radioGroup.check(R.id.radio_upcoming)
+                NOW_PLAYING_CATEGORY -> binding.include.radioGroup.check(R.id.radio_now_playing)
             }
         })
 
         //Слушатель для отправки нового состояния в настройк
-        binding.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.include.radioGroup.setOnCheckedChangeListener { group, checkedId ->
             when(checkedId) {
                 R.id.radio_popular -> viewModel.putCategoryProperty(POPULAR_CATEGORY)
                 R.id.radio_top_rated -> viewModel.putCategoryProperty(TOP_RATED_CATEGORY)
@@ -71,7 +74,7 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
             }
         }
 
-        binding.apply.setOnClickListener {
+        binding.include.apply.setOnClickListener {
             homeFragment.initRefresh()
             dismiss()
         }
