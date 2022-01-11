@@ -7,8 +7,7 @@ import com.zaus_app.moviefrumy.view.rv_viewholders.FilmViewHolder
 import com.zaus_app.moviefrumy.databinding.FilmItemBinding
 import com.zaus_app.moviefrumy.data.entity.Film
 
-class FilmAdapter(private val clickListener: OnItemClickListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class FilmAdapter(private val clickListener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     //Здесь у нас хранится список элементов для RV
     private var items = mutableListOf<Film>()
 

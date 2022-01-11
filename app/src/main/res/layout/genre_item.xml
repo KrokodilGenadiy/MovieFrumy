@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="100dp"
-    android:layout_height="65dp">
+    android:layout_width="70dp"
+    android:layout_height="80dp">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/genre_image"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="60dp"
         android:src="@drawable/no_poster"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/genre_name"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-
         android:text="Action"
         android:textAlignment="center"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/genre_image" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

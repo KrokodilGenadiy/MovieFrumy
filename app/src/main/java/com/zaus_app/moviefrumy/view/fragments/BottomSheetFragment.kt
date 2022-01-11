@@ -6,17 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zaus_app.moviefrumy.R
+import com.zaus_app.moviefrumy.data.GenreList
+import com.zaus_app.moviefrumy.data.entity.Genre
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.databinding.SheetContentBinding
+import com.zaus_app.moviefrumy.view.rv_adapters.GenreAdapter
 import com.zaus_app.moviefrumy.viewmodel.BottomSheetFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.SettingsFragmentViewModel
 
 class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragment() {
     private val homeFragment = homeFragment
+    private lateinit var genreAdapter: GenreAdapter
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(BottomSheetFragmentViewModel::class.java)
     }
@@ -33,7 +39,18 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Слушаем, какой у нас сейчас выбран вариант в настройках
+
+        binding.genresList.apply {
+            genreAdapter = GenreAdapter(object : GenreAdapter.OnItemClickListener{
+                override fun click(genre: Genre) {
+                  Toast.makeText(requireContext(),"Clicked!",Toast.LENGTH_SHORT).show()
+                }
+            })
+            //Присваиваем адаптер
+            adapter = genreAdapter
+        }
+        //Кладем нашу БД в RV
+        genreAdapter.items = GenreList.genrelist
         //Слушаем, какой у нас сейчас выбран вариант в настройках
         viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner, Observer<String> {
             when(it) {
