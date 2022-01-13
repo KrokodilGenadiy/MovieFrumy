@@ -1,5 +1,6 @@
 package com.zaus_app.moviefrumy.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
@@ -11,8 +12,8 @@ import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
     val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
+    var status: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
-    //Инициализируем интерактор
     private var currentPage = 1
     //Инициализируем интерактор
     @Inject
@@ -28,6 +29,7 @@ class HomeFragmentViewModel : ViewModel() {
             showShimmering.postValue(false)
             Executors.newSingleThreadExecutor().execute {
                 filmsListLiveData.postValue(interactor.getFilmsFromDB())
+                status.postValue(true)
             }
         }
     }

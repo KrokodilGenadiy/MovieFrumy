@@ -10,6 +10,9 @@ class RoomConverter {
 
     @TypeConverter
     fun fromStringTOListOfInts(str: String): List<Int> {
-        return str.split(",").toTypedArray().map { it.toInt() }
+        return if (str == "")
+            emptyList()
+        else
+            str.split(",").toTypedArray().map { it.toInt() }
     }
 }

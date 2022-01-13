@@ -17,6 +17,9 @@
     <string name="radio_button_upcoming">Скоро в кино</string>
     <string name="radio_button_playing">В кинотеатрах</string>
     <string name="radio_group_header">Показать сначало</string>
+    <string name="permission_storage">Нет разрешения. Пожалуйста, предоставьте разрешение</string>
+    <string name="downloaded_to_gallery">"Сохранено в галерею"</string>
+    <string name="open">В галерею</string>
 
     <string name="languages_selection_header">Выбор языка</string>
     <string-array name="languages">

@@ -65,7 +65,7 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
         })
 
         //Слушатель для отправки нового состояния в настройк
-        binding.include.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+        binding.include.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId) {
                 R.id.radio_popular -> viewModel.putCategoryProperty(POPULAR_CATEGORY)
                 R.id.radio_top_rated -> viewModel.putCategoryProperty(TOP_RATED_CATEGORY)
