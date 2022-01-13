@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:translationZ="10dp"
         android:visibility="invisible"
-        android:translationX="90dp"
+        android:translationX="92dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="left|bottom" />
 
