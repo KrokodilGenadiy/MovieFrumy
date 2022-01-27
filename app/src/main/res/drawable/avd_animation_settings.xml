@@ -1,0 +1,46 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="24dp"
+            android:height="24dp"
+            android:viewportWidth="24"
+            android:viewportHeight="24">
+            <group android:name="group">
+                <path
+                    android:fillColor="@android:color/white"
+                    android:name="path"
+                    android:pathData="M 19.5 12 C 19.5 11.77 19.49 11.55 19.47 11.32 L 21.33 9.91 C 21.73 9.61 21.84 9.05 21.59 8.61 L 19.72 5.38 C 19.47 4.94 18.93 4.76 18.47 4.96 L 16.32 5.87 C 15.95 5.61 15.56 5.38 15.15 5.19 L 14.86 2.88 C 14.8 2.38 14.37 2 13.87 2 L 10.14 2 C 9.63 2 9.2 2.38 9.14 2.88 L 8.85 5.19 C 8.44 5.38 8.05 5.61 7.68 5.87 L 5.53 4.96 C 5.07 4.76 4.53 4.94 4.28 5.38 L 2.41 8.62 C 2.16 9.06 2.27 9.61 2.67 9.92 L 4.53 11.33 C 4.51 11.55 4.5 11.77 4.5 12 C 4.5 12.23 4.51 12.45 4.53 12.68 L 2.67 14.09 C 2.27 14.39 2.16 14.95 2.41 15.39 L 4.28 18.62 C 4.53 19.06 5.07 19.24 5.53 19.04 L 7.68 18.13 C 8.05 18.39 8.44 18.62 8.85 18.81 L 9.14 21.12 C 9.2 21.62 9.63 22 10.13 22 L 13.86 22 C 14.36 22 14.79 21.62 14.85 21.12 L 15.14 18.81 C 15.55 18.62 15.94 18.39 16.31 18.13 L 18.46 19.04 C 18.92 19.24 19.46 19.06 19.71 18.62 L 21.58 15.39 C 21.83 14.95 21.72 14.4 21.32 14.09 L 19.46 12.68 C 19.49 12.45 19.5 12.23 19.5 12 Z M 12.04 15.5 C 10.11 15.5 8.54 13.93 8.54 12 C 8.54 10.07 10.11 8.5 12.04 8.5 C 13.97 8.5 15.54 10.07 15.54 12 C 15.54 13.93 13.97 15.5 12.04 15.5 Z"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="rotation"
+                    android:duration="800"
+                    android:valueFrom="0"
+                    android:valueTo="360"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:propertyName="pivotX"
+                    android:duration="800"
+                    android:valueFrom="12"
+                    android:valueTo="12"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/accelerate_decelerate_interpolator"/>
+                <objectAnimator
+                    android:propertyName="pivotY"
+                    android:duration="800"
+                    android:valueFrom="12"
+                    android:valueTo="12"
+                    android:valueType="floatType"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"/>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

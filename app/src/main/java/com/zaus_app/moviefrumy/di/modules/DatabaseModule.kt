@@ -18,7 +18,7 @@ class DatabaseModule {
         Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "film_db2"
+            "films_db2"
         ).build().filmDao()
 
     @Provides

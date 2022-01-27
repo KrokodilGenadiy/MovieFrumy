@@ -6,16 +6,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.zaus_app.moviefrumy.R
+import com.zaus_app.moviefrumy.data.GenreList
+import com.zaus_app.moviefrumy.data.entity.Genre
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.databinding.SheetContentBinding
+import com.zaus_app.moviefrumy.view.rv_adapters.GenreAdapter
+import com.zaus_app.moviefrumy.view.rv_adapters.itemdecorators.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.BottomSheetFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.SettingsFragmentViewModel
 
 class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragment() {
     private val homeFragment = homeFragment
+    private lateinit var genreAdapter: GenreAdapter
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(BottomSheetFragmentViewModel::class.java)
     }
@@ -27,76 +36,48 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
     ): View {
         val inflater = LayoutInflater.from(requireContext())
         binding = SheetContentBinding.inflate(inflater)
-        print(binding.root.height)
-        val selections = resources.getStringArray(R.array.selections)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-        binding.autoCompleteTextView.setAdapter(arrayAdapter)
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        val languages = resources.getStringArray(R.array.selections)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_selections, languages)
-        binding.autoCompleteTextView.setAdapter(arrayAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Подключаем анимации и передаем номер позиции у кнопки в нижнем меню
-        val selections = resources.getStringArray(R.array.selections)
-        var arrayAdapter: ArrayAdapter<String>
 
+        binding.include.genresList.apply {
+            genreAdapter = GenreAdapter(object : GenreAdapter.OnItemClickListener{
+                override fun click(genre: Genre) {
+                  Toast.makeText(requireContext(),"Clicked!",Toast.LENGTH_SHORT).show()
+                }
+            })
+            //Присваиваем адаптер
+            adapter = genreAdapter
+
+            layoutManager = GridLayoutManager(requireContext(), 5)
+            val decorator = ItemDecorator(6)
+            addItemDecoration(decorator)
+        }
+        //Кладем нашу БД в RV
+        genreAdapter.items = GenreList.genrelist
         //Слушаем, какой у нас сейчас выбран вариант в настройках
-        viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner) {
-            when (it) {
-                POPULAR_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.popular)
-                    arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
-                }
-                TOP_RATED_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.top_rated)
-                    arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
-                }
-                UPCOMING_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.upcoming)
-                    arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
-                }
-                NOW_PLAYING_CATEGORY -> {
-                    binding.autoCompleteTextView.setText(R.string.playing)
-                    arrayAdapter =
-                        ArrayAdapter(requireContext(), R.layout.dropdown_selections, selections)
-                    binding.autoCompleteTextView.setAdapter(arrayAdapter)
-                }
+        viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner, Observer<String> {
+            when(it) {
+                POPULAR_CATEGORY -> binding.include.radioGroup.check(R.id.radio_popular)
+                TOP_RATED_CATEGORY -> binding.include.radioGroup.check(R.id.radio_top_rated)
+                UPCOMING_CATEGORY -> binding.include.radioGroup.check(R.id.radio_upcoming)
+                NOW_PLAYING_CATEGORY -> binding.include.radioGroup.check(R.id.radio_now_playing)
+            }
+        })
+
+        //Слушатель для отправки нового состояния в настройк
+        binding.include.radioGroup.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId) {
+                R.id.radio_popular -> viewModel.putCategoryProperty(POPULAR_CATEGORY)
+                R.id.radio_top_rated -> viewModel.putCategoryProperty(TOP_RATED_CATEGORY)
+                R.id.radio_upcoming -> viewModel.putCategoryProperty(UPCOMING_CATEGORY)
+                R.id.radio_now_playing -> viewModel.putCategoryProperty(NOW_PLAYING_CATEGORY)
             }
         }
 
-        //Слушатель для отправки нового состояния в настройк
-        binding.autoCompleteTextView.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, _, position, _ ->
-                when (parent.getItemAtPosition(position).toString()) {
-                    resources.getString(R.string.popular) -> viewModel.putCategoryProperty(
-                        POPULAR_CATEGORY
-                    )
-                    resources.getString(R.string.top_rated) -> viewModel.putCategoryProperty(
-                        TOP_RATED_CATEGORY
-                    )
-                    resources.getString(R.string.upcoming) -> viewModel.putCategoryProperty(
-                        UPCOMING_CATEGORY
-                    )
-                    resources.getString(R.string.playing) -> viewModel.putCategoryProperty(
-                        NOW_PLAYING_CATEGORY
-                    )
-                }
-            }
-
-        binding.apply.setOnClickListener {
+        binding.include.apply.setOnClickListener {
             homeFragment.initRefresh()
             dismiss()
         }

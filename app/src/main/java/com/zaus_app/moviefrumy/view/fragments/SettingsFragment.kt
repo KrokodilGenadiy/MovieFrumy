@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.databinding.FragmentSettingsBinding
 import com.zaus_app.moviefrumy.utils.AnimationHelper
+import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.viewmodel.SettingsFragmentViewModel
-
 
 class SettingsFragment : Fragment() {
     private lateinit var binding: FragmentSettingsBinding
@@ -52,7 +52,7 @@ class SettingsFragment : Fragment() {
         //Слушаем, какой у нас сейчас выбран вариант в настройках
         viewModel.languagePropertyLiveData.observe(viewLifecycleOwner, {
             when (it) {
-                RUSSIAN_LANGUAGE -> {
+                RUSSIAN_LANGUAGE   -> {
                     binding.languageSelection.setText(R.string.russian)
                     arrayAdapter =
                         ArrayAdapter(requireContext(), R.layout.languege_selection, selections)
@@ -67,23 +67,31 @@ class SettingsFragment : Fragment() {
             }
         })
 
-        //Слушатель для отправки нового состояния в настройк
+        //Слушатель для отправки нового состояния в настройки
         binding.languageSelection.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
                 when (parent.getItemAtPosition(position).toString()) {
-                    resources.getString(R.string.russian) -> viewModel.putLanguageProperty(
-                        RUSSIAN_LANGUAGE
-                    )
-                    resources.getString(R.string.english) -> viewModel.putLanguageProperty(
-                        ENGLISH_LANGUAGE
-                    )
+                    resources.getString(R.string.russian) -> {
+                        if (viewModel.languagePropertyLiveData.value != RUSSIAN_LANGUAGE) {
+                            viewModel.putLanguageProperty(RUSSIAN_LANGUAGE)
+                            (activity as MainActivity).setLocale("ru")
+                        }
+
+                    }
+                    resources.getString(R.string.english) -> {
+                        if (viewModel.languagePropertyLiveData.value != ENGLISH_LANGUAGE) {
+                            viewModel.putLanguageProperty(ENGLISH_LANGUAGE)
+                            (activity as MainActivity).setLocale("en")
+                        }
+
+                    }
                 }
             }
-
     }
 
+
     companion object {
-        private const val RUSSIAN_LANGUAGE = "ru-RU"
-        private const val ENGLISH_LANGUAGE = "en-EN"
+        private const val RUSSIAN_LANGUAGE = "ru"
+        private const val ENGLISH_LANGUAGE = "en"
     }
 }

@@ -14,7 +14,6 @@ android {
         targetSdkVersion 31
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -62,7 +61,7 @@ dependencies {
     //Coordinator layout
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
 
-//Glide
+    //Glide
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     kapt 'com.github.bumptech.glide:compiler:4.12.0'
 
@@ -75,7 +74,7 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
 
     //Paging
-    implementation 'androidx.paging:paging-runtime:3.1.0'
+    implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
 
     //Dagger
     implementation "com.google.dagger:dagger:2.38.1"
@@ -88,4 +87,12 @@ dependencies {
     def room_version = "2.4.0"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
+
+    // Gradle dependency on Shimmer for Android
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+    //Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
+
 }

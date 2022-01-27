@@ -1,5 +1,6 @@
 package com.zaus_app.moviefrumy.viewmodel
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
@@ -10,9 +11,9 @@ import javax.inject.Inject
 
 
 class HomeFragmentViewModel : ViewModel() {
-    var filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
-    val showProgressBar: MutableLiveData<Boolean> = MutableLiveData()
-    //Инициализируем интерактор
+    val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
+    var status: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
     private var currentPage = 1
     //Инициализируем интерактор
     @Inject
@@ -20,20 +21,21 @@ class HomeFragmentViewModel : ViewModel() {
 
     private val apiCallback = object : ApiCallback {
         override fun onSuccess(films: List<Film>) {
-            showProgressBar.postValue(false)
+            showShimmering.postValue(false)
             filmsListLiveData.postValue(films)
         }
 
         override fun onFailure() {
+            showShimmering.postValue(false)
             Executors.newSingleThreadExecutor().execute {
-                showProgressBar.postValue(false)
-                filmsListLiveData = interactor.getFilmsFromDB() as MutableLiveData<List<Film>>
+                filmsListLiveData.postValue(interactor.getFilmsFromDB())
+                status.postValue(true)
             }
         }
     }
 
     fun getFilms() {
-        showProgressBar.postValue(true)
+        showShimmering.postValue(true)
         interactor.getFilmsFromApi(1, apiCallback)
     }
 
@@ -47,8 +49,8 @@ class HomeFragmentViewModel : ViewModel() {
         fun onFailure()
     }
 
-    fun doPagination(visibleItemCount: Int,totalItemCount: Int,pastVisibleItemCOunt: Int) {
-        if ((visibleItemCount+pastVisibleItemCOunt) >= totalItemCount -2) {
+    fun doPagination(visibleItemCount: Int,totalItemCount: Int,pastVisibleItemCount: Int) {
+        if ((visibleItemCount+pastVisibleItemCount) >= totalItemCount -2) {
             val page = ++currentPage
             interactor.getFilmsFromApi(page,apiCallback)
         }

@@ -28,19 +28,14 @@ class Interactor(private val repo: MainRepository,private val favoritesRepo: Fav
             }
         })
     }
+
     fun getFavoriteFilms(): MutableList<Film> = favoritesRepo.favoritesList
-
     fun addToFavorites(film: Film) = favoritesRepo.favoritesList.add(film)
-
     fun removeFromFavorites(film: Film) = favoritesRepo.favoritesList.remove(film)
-    //Метод для сохранения настроек
-    fun saveDefaultCategoryToPreferences(category: String) {
-        preferences.saveDefaultCategory(category)
-    }
-    fun saveDefaultLanguageToPreferences(language: String) {
-        preferences.saveDefaultLanguage(language)
-    }
-    //Метод для получения настроек
+
+    fun saveDefaultCategoryToPreferences(category: String) = preferences.saveDefaultCategory(category)
+    fun saveDefaultLanguageToPreferences(language: String) = preferences.saveDefaultLanguage(language)
+
     fun getDefaultCategoryFromPreferences() = preferences.getDefaultCategory()
     fun getDefaultLanguageFromPreferences() = preferences.getDefaultLanguage()
 

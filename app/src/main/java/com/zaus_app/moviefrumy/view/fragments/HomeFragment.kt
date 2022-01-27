@@ -5,21 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
-import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
-import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
+import com.zaus_app.moviefrumy.view.rv_adapters.diffutils.FilmDiff
+import com.zaus_app.moviefrumy.view.rv_adapters.itemdecorators.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
 import java.util.*
 
@@ -101,25 +101,42 @@ class HomeFragment : Fragment() {
 
         initRecycler()
 
+
+        viewModel.status.observe(viewLifecycleOwner, {
+            if (it)
+                Snackbar.make(
+                    binding.root,
+                    "No internet connection",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            viewModel.status.postValue(false)
+        })
         //Кладем нашу БД в RV
         viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
             filmsDataBase = it as MutableList<Film>
             updateData(filmsDataBase)
         })
-        viewModel.showProgressBar.observe(viewLifecycleOwner, Observer<Boolean> {
-            binding.progressBar.isVisible = it
+
+        viewModel.showShimmering.observe(viewLifecycleOwner, {
+            if (it) {
+                binding.include.shimmerLayout.visibility = View.VISIBLE
+                binding.include.shimmerLayout.startShimmer()
+            } else {
+                binding.include.shimmerLayout.stopShimmer()
+                binding.include.shimmerLayout.visibility = View.GONE
+            }
         })
 
         //initPullToRefresh()
 
-        binding.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.include.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
-                    val visibleItemCount = binding.mainRecycler.layoutManager!!.childCount
-                    val totalItemCount = binding.mainRecycler.layoutManager!!.itemCount
+                    val visibleItemCount = binding.include.mainRecycler.layoutManager!!.childCount
+                    val totalItemCount = binding.include.mainRecycler.layoutManager!!.itemCount
                     val pastVisibleItemCount =
-                        (binding.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        (binding.include.mainRecycler.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                     viewModel.doPagination(visibleItemCount, totalItemCount, pastVisibleItemCount)
                 }
             }
@@ -129,7 +146,7 @@ class HomeFragment : Fragment() {
 
     fun initRecycler() {
         //находим наш RV
-        binding.mainRecycler.apply {
+        binding.include.mainRecycler.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
@@ -151,7 +168,7 @@ class HomeFragment : Fragment() {
         isRefreshing = true
         //Делаем новый запрос фильмов на сервер
         viewModel.getFilms()
-        binding.mainRecycler.layoutManager?.scrollToPosition(0)
+        binding.include.mainRecycler.layoutManager?.scrollToPosition(0)
     }
 
     fun initToolbar() {

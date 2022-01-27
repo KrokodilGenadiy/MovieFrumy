@@ -13,8 +13,8 @@ import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FavoritesAdapter
-import com.zaus_app.moviefrumy.view.rv_adapters.FilmDiff
-import com.zaus_app.moviefrumy.view.rv_adapters.ItemDecorator
+import com.zaus_app.moviefrumy.view.rv_adapters.diffutils.FilmDiff
+import com.zaus_app.moviefrumy.view.rv_adapters.itemdecorators.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.FavoriteFragmentViewModel
 
 

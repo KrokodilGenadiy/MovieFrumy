@@ -8,6 +8,18 @@ import com.zaus_app.moviefrumy.databinding.ActivityMainBinding
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.view.fragments.*
+import java.util.Locale
+import android.content.Intent
+import android.content.res.Configuration
+import com.zaus_app.moviefrumy.domain.Interactor
+import com.zaus_app.moviefrumy.utils.PreferenceProvider
+import javax.inject.Inject
+import android.app.Activity
+import android.content.Context
+
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -15,11 +27,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        loadLocale()
         setTheme(R.style.AppTheme)
         binding = ActivityMainBinding.inflate(layoutInflater)
         homeBinding = FragmentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initNavigation()
 
         //Зупускаем фрагмент при старте
@@ -91,6 +103,30 @@ class MainActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.fragment_placeholder, fragment, tag)
             .commit()
+    }
+
+    // TODO: 17.01.2022  Better remove the language change completely or find a stable solution
+    fun setLocale(lang: String) {
+        changeLang(lang)
+        val refresh = Intent(this, MainActivity::class.java)
+        finish()
+        startActivity(refresh)
+    }
+
+    fun loadLocale() {
+        val preferences = getSharedPreferences("settings", MODE_PRIVATE)
+        val languagePref = "default_language"
+        val language = preferences.getString(languagePref, "")
+        changeLang(language!!)
+    }
+
+    fun changeLang(lang: String) {
+        if (lang.equals("", ignoreCase = true)) return
+        val myLocale = Locale(lang)
+        Locale.setDefault(myLocale)
+        val config = Configuration()
+        config.locale = myLocale
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics())
     }
 
 
