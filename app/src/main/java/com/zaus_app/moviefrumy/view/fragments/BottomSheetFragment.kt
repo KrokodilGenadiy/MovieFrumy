@@ -18,6 +18,7 @@ import com.zaus_app.moviefrumy.data.entity.Genre
 import com.zaus_app.moviefrumy.databinding.FragmentHomeBinding
 import com.zaus_app.moviefrumy.databinding.SheetContentBinding
 import com.zaus_app.moviefrumy.view.rv_adapters.GenreAdapter
+import com.zaus_app.moviefrumy.view.rv_adapters.itemdecorators.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.BottomSheetFragmentViewModel
 import com.zaus_app.moviefrumy.viewmodel.SettingsFragmentViewModel
 
@@ -51,6 +52,8 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
             adapter = genreAdapter
 
             layoutManager = GridLayoutManager(requireContext(), 5)
+            val decorator = ItemDecorator(6)
+            addItemDecoration(decorator)
         }
         //Кладем нашу БД в RV
         genreAdapter.items = GenreList.genrelist

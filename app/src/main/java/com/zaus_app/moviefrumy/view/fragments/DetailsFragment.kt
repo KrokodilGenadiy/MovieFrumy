@@ -78,12 +78,12 @@ class DetailsFragment : Fragment() {
             //Кладем данные о нашем фильме
             intent.putExtra(
                 Intent.EXTRA_TEXT,
-                "Check out this film: ${film.title} \n\n ${film.description}"
+                resources.getString(R.string.check_out)+" ${film.title} \n ${film.description}"
             )
             //Указываем MIME тип, чтобы система знала, какое приложения предложить
             intent.type = "text/plain"
             //Запускаем наше активити
-            startActivity(Intent.createChooser(intent, "Share To:"))
+            startActivity(Intent.createChooser(intent, resources.getString(R.string.share_to)))
         }
 
         binding.detailsFabDownloadWp.setOnClickListener {
@@ -118,7 +118,7 @@ class DetailsFragment : Fragment() {
         if (bitmap == null) {
             Snackbar.make(
                 binding.root,
-                "No internet connection",
+                resources.getString(R.string.no_internet),
                 Snackbar.LENGTH_LONG
             ).show()
             return false
@@ -139,7 +139,7 @@ class DetailsFragment : Fragment() {
                     System.currentTimeMillis() / 1000
                 )
                 put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/FilmsSearchApp")
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/MovieFrumyApp")
             }
             //Получаем ссылку на объект Content resolver, который помогает передавать информацию из приложения вовне
             val contentResolver = requireActivity().contentResolver

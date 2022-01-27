@@ -1,5 +1,6 @@
 package com.zaus_app.moviefrumy.data
 
+import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.R
 import com.zaus_app.moviefrumy.data.entity.Genre
 
@@ -27,46 +28,46 @@ War             10752
 Western         37
  */
     val genrelist = listOf(
-        Genre( 28 , "Action", R.drawable.ic_ball),
-        Genre( 12 , "Adventure", R.drawable.ic_ball),
-        Genre( 16 , "Animation", R.drawable.ic_ball),
-        Genre( 35 , "Comedy", R.drawable.ic_ball),
-        Genre( 80 , "Crime", R.drawable.ic_ball),
-        Genre( 99 , "Documentary", R.drawable.ic_ball),
-        Genre( 18 , "Drama", R.drawable.ic_ball),
-        Genre( 10751 , "Family", R.drawable.ic_ball),
-        Genre( 14 , "Fantasy", R.drawable.ic_ball),
-        Genre( 36 , "History", R.drawable.ic_ball),
-        Genre( 27 , "Horror", R.drawable.ic_ball),
-        Genre( 10402 , "Music", R.drawable.ic_ball),
-        Genre( 9648 , "Mystery", R.drawable.ic_ball),
-        Genre( 10749 , "Romance", R.drawable.ic_ball),
-        Genre( 878 , "Science Fiction", R.drawable.ic_ball),
-        Genre( 10770 , "TV Movie", R.drawable.ic_ball),
-        Genre( 53 , "Thriller", R.drawable.ic_ball),
-        Genre( 10752 , "War", R.drawable.ic_ball),
-        Genre( 37 , "Western", R.drawable.ic_ball)
+        Genre( 28 , App.instance.resources.getString(R.string.action), R.drawable.ic_ball),
+        Genre( 12 , App.instance.resources.getString(R.string.adventure), R.drawable.ic_ball),
+        Genre( 16 , App.instance.resources.getString(R.string.animation), R.drawable.ic_ball),
+        Genre( 35 , App.instance.resources.getString(R.string.comedy), R.drawable.ic_ball),
+        Genre( 80 , App.instance.resources.getString(R.string.crime), R.drawable.ic_ball),
+        Genre( 99 , App.instance.resources.getString(R.string.documentary), R.drawable.ic_ball),
+        Genre( 18 , App.instance.resources.getString(R.string.drama), R.drawable.ic_ball),
+        Genre( 10751 , App.instance.resources.getString(R.string.family), R.drawable.ic_ball),
+        Genre( 14 , App.instance.resources.getString(R.string.fantasy), R.drawable.ic_ball),
+        Genre( 36 , App.instance.resources.getString(R.string.history), R.drawable.ic_ball),
+        Genre( 27 , App.instance.resources.getString(R.string.horror), R.drawable.ic_ball),
+        Genre( 10402 , App.instance.resources.getString(R.string.music), R.drawable.ic_ball),
+        Genre( 9648 , App.instance.resources.getString(R.string.mystery), R.drawable.ic_ball),
+        Genre( 10749 , App.instance.resources.getString(R.string.romance), R.drawable.ic_ball),
+        Genre( 878 , App.instance.resources.getString(R.string.science_fiction), R.drawable.ic_ball),
+        Genre( 10770 , App.instance.resources.getString(R.string.tv_movie), R.drawable.ic_ball),
+        Genre( 53 , App.instance.resources.getString(R.string.thriller), R.drawable.ic_ball),
+        Genre( 10752 , App.instance.resources.getString(R.string.war), R.drawable.ic_ball),
+        Genre( 37 , App.instance.resources.getString(R.string.western), R.drawable.ic_ball)
     )
     //just trying hashmap for learning purposes
     val genres: HashMap<Int, String> = hashMapOf(
-        28 to "Action",
-        12 to "Adventure",
-        16 to "Animation",
-        35 to "Comedy",
-        80 to "Crime",
-        99 to "Documentary",
-        18 to "Drama",
-        10751 to "Family",
-        14 to "Fantasy",
-        36 to "History",
-        27 to "Horror",
-        10402 to "Music",
-        9648 to "Mystery",
-        10749 to "Romance",
-        878 to "Science Fiction",
-        10770 to "TV Movie",
-        53 to "Thriller",
-        10752 to "War",
-        37 to "Western",
+        28 to App.instance.resources.getString(R.string.action),
+        12 to App.instance.resources.getString(R.string.adventure),
+        16 to App.instance.resources.getString(R.string.animation),
+        35 to App.instance.resources.getString(R.string.comedy),
+        80 to App.instance.resources.getString(R.string.crime),
+        99 to App.instance.resources.getString(R.string.documentary),
+        18 to App.instance.resources.getString(R.string.drama),
+        10751 to App.instance.resources.getString(R.string.family),
+        14 to App.instance.resources.getString(R.string.fantasy),
+        36 to App.instance.resources.getString(R.string.history),
+        27 to App.instance.resources.getString(R.string.horror),
+        10402 to App.instance.resources.getString(R.string.music),
+        9648 to App.instance.resources.getString(R.string.mystery),
+        10749 to App.instance.resources.getString(R.string.romance),
+        878 to App.instance.resources.getString(R.string.science_fiction),
+        10770 to App.instance.resources.getString(R.string.tv_movie),
+        53 to App.instance.resources.getString(R.string.thriller),
+        10752 to App.instance.resources.getString(R.string.war),
+        37 to App.instance.resources.getString(R.string.western),
     )
 }

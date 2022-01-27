@@ -3,6 +3,7 @@ package com.zaus_app.moviefrumy.di
 import com.zaus_app.moviefrumy.di.modules.DatabaseModule
 import com.zaus_app.moviefrumy.di.modules.DomainModule
 import com.zaus_app.moviefrumy.di.modules.RemoteModule
+import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.fragments.DetailsFragment
 import com.zaus_app.moviefrumy.view.fragments.FavoritesFragment
 import com.zaus_app.moviefrumy.viewmodel.*
