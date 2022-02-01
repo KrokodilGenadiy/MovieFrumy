@@ -7,14 +7,12 @@ import com.zaus_app.moviefrumy.domain.Interactor
 import javax.inject.Inject
 
 class SettingsFragmentViewModel : ViewModel() {
-    //Инжектим интерактор
     @Inject
     lateinit var interactor: Interactor
     val languagePropertyLiveData: MutableLiveData<String> = MutableLiveData()
 
     init {
         App.instance.dagger.inject(this)
-        //Получаем категорию при инициализации, чтобы у нас сразу подтягивалась категория
         getLanguageProperty()
     }
 
@@ -23,9 +21,7 @@ class SettingsFragmentViewModel : ViewModel() {
     }
 
     fun putLanguageProperty(language: String) {
-        //Сохраняем в настройки
         interactor.saveDefaultLanguageToPreferences(language)
-        //И сразу забираем, чтобы сохранить состояние в модели
         getLanguageProperty()
     }
 }

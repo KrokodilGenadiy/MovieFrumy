@@ -12,7 +12,6 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    //Внедряем все модули, нужные для этого компонента
     modules = [
         RemoteModule::class,
         DatabaseModule::class,

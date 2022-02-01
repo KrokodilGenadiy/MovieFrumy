@@ -10,7 +10,6 @@ import javax.inject.Inject
 
 class FavoriteFragmentViewModel : ViewModel() {
     val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
-    //Инициализируем интерактор
     @Inject
     lateinit var interactor: Interactor
 

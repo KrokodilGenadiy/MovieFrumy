@@ -145,20 +145,14 @@ class HomeFragment : Fragment() {
 
 
     fun initRecycler() {
-        //находим наш RV
         binding.include.mainRecycler.apply {
             filmsAdapter = FilmAdapter(object : FilmAdapter.OnItemClickListener {
                 override fun click(film: Film) {
                     (requireActivity() as MainActivity).launchDetailsFragment(film)
                 }
             })
-            //Присваиваем адаптер
             adapter = filmsAdapter
-            //Присвои layoutmanager
             layoutManager = LinearLayoutManager(requireContext())
-            //добавляем пагинацию
-            // initPagination()
-            //Применяем декоратор для отступов
             val decorator = ItemDecorator(8)
             addItemDecoration(decorator)
         }

@@ -26,16 +26,20 @@ import com.zaus_app.moviefrumy.databinding.FragmentDetailsBinding
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.viewmodel.DetailsFragmentViewModel
 import kotlinx.coroutines.*
+import android.view.ViewTreeObserver
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 
 class DetailsFragment : Fragment() {
     private lateinit var film: Film
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private var loadingPoster = false
     private val viewModel by lazy {
         ViewModelProvider.NewInstanceFactory().create(DetailsFragmentViewModel::class.java)
     }
     private val scope = CoroutineScope(Dispatchers.IO)
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,41 +77,39 @@ class DetailsFragment : Fragment() {
 
         binding.detailsFabShare.setOnClickListener {     //Создаем интент
             val intent = Intent()
-            //Указываем action с которым он запускается
             intent.action = Intent.ACTION_SEND
-            //Кладем данные о нашем фильме
             intent.putExtra(
                 Intent.EXTRA_TEXT,
                 resources.getString(R.string.check_out)+" ${film.title} \n ${film.description}"
             )
-            //Указываем MIME тип, чтобы система знала, какое приложения предложить
             intent.type = "text/plain"
-            //Запускаем наше активити
             startActivity(Intent.createChooser(intent, resources.getString(R.string.share_to)))
         }
 
         binding.detailsFabDownloadWp.setOnClickListener {
             performAsyncLoadOfPoster()
         }
+
+        val downloadFabButton = binding.detailsFabDownloadWp
+        downloadFabButton.viewTreeObserver.addOnGlobalLayoutListener(OnGlobalLayoutListener {
+            if (downloadFabButton.isShown) {
+                binding.progressBar.isVisible = loadingPoster
+            }
+        })
     }
 
     private fun setFilmsDetails(film: Film) {
-        //Получаем наш фильм из переданного бандла
-        //Устанавливаем заголовок
         binding.title.text = film.title
-        //Устанавливаем картинку
         Glide.with(this)
             .load(ApiConstants.IMAGES_URL + "w780" + film.poster)
             .centerCrop()
             .into(binding.detailsPoster)
-        //Устанавливаем описание
         binding.detailsDescription.text = film.description
         var genreText = ""
         for (genre in film.genres) {
             genreText = genreText+GenreList.genres.get(genre)+" "
         }
         binding.genres.text = genreText
-        //Устанавиливаем значок любимого
         binding.detailsFabFavorites.setImageResource(
             if (film.isInFavorites) R.drawable.ic_round_favorite
             else R.drawable.ic_baseline_favorite_border_24
@@ -123,11 +125,8 @@ class DetailsFragment : Fragment() {
             ).show()
             return false
         }
-        //Проверяем версию системы
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            //Создаем объект для передачи данных
             val contentValues = ContentValues().apply {
-                //Составляем информацию для файла (имя, тип, дата создания, куда сохранять и т.д.)
                 put(MediaStore.Images.Media.TITLE, film.title.handleSingleQuote())
                 put(
                     MediaStore.Images.Media.DISPLAY_NAME,
@@ -141,17 +140,13 @@ class DetailsFragment : Fragment() {
                 put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
                 put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/MovieFrumyApp")
             }
-            //Получаем ссылку на объект Content resolver, который помогает передавать информацию из приложения вовне
             val contentResolver = requireActivity().contentResolver
             val uri = contentResolver.insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 contentValues
             )
-            //Открываем канал для записи на диск
             val outputStream = contentResolver.openOutputStream(uri!!)
-            //Передаем нашу картинку, может сделать компрессию
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-            //Закрываем поток
             outputStream?.close()
         } else {
             //То же, но для более старых версий ОС
@@ -187,23 +182,17 @@ class DetailsFragment : Fragment() {
     }
 
     private fun performAsyncLoadOfPoster() {
-        //Проверяем есть ли разрешение
+        loadingPoster = true
         if (!checkPermission()) {
-            //Если нет, то запрашиваем и выходим из метода
             requestPermission()
             return
         }
-        //Создаем родительский скоуп с диспатчером Main потока, так как будем взаимодействовать с UI
         MainScope().launch {
-            //Включаем Прогресс-бар
              binding.progressBar.isVisible = true
-            //Создаем через async, так как нам нужен результат от работы, то есть Bitmap
             val job = scope.async {
                 viewModel.loadWallpaper(ApiConstants.IMAGES_URL + "original" + film.poster)
             }
-            //Сохраняем в галерею, как только файл загрузится
             val isSuccesful = saveToGallery(job.await())
-            //Выводим снекбар с кнопкой перейти в галерею
             if (isSuccesful) {
                 Snackbar.make(
                     binding.root,
@@ -219,8 +208,9 @@ class DetailsFragment : Fragment() {
                     }
                     .show()
             }
-            //Отключаем Прогресс-бар
+            loadingPoster = false
             binding.progressBar.isVisible = false
         }
     }
+
 }

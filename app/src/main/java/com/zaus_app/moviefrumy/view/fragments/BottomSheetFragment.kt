@@ -48,16 +48,13 @@ class BottomSheetFragment(homeFragment: HomeFragment) : BottomSheetDialogFragmen
                   Toast.makeText(requireContext(),"Clicked!",Toast.LENGTH_SHORT).show()
                 }
             })
-            //Присваиваем адаптер
             adapter = genreAdapter
 
             layoutManager = GridLayoutManager(requireContext(), 5)
             val decorator = ItemDecorator(6)
             addItemDecoration(decorator)
         }
-        //Кладем нашу БД в RV
         genreAdapter.items = GenreList.genrelist
-        //Слушаем, какой у нас сейчас выбран вариант в настройках
         viewModel.categoryPropertyLifeData.observe(viewLifecycleOwner, Observer<String> {
             when(it) {
                 POPULAR_CATEGORY -> binding.include.radioGroup.check(R.id.radio_popular)

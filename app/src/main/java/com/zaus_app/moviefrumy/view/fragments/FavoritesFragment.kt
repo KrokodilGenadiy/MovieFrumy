@@ -26,13 +26,10 @@ class FavoritesFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FavoritesAdapter
     private var favotesDataBase = mutableListOf<Film>()
-        //Используем backing field
         set(value) {
             //Если придет такое же значение то мы выходим из метода
             if (field == value) return
-            //Если прило другое значение, то кладем его в переменную
             field = value
-            //Обновляем RV адаптер
             updateData(field)
         }
 
@@ -50,7 +47,6 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
-        //Кладем нашу БД в RV
         viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
             favotesDataBase = it as MutableList<Film>
         })
@@ -81,18 +77,13 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun initRecycler() {
-        //находим наш RV
         binding.favoritesRecycler.apply {
-            //Присваиваем адаптер
             adapter = filmsAdapter
-            //Присвои layoutmanager
             layoutManager = LinearLayoutManager(requireContext())
-            //Применяем декоратор для отступов
             val decorator = ItemDecorator(8)
             addItemDecoration(decorator)
         }
 
-        //Кладем нашу БД в RV
         viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
             favotesDataBase = it as MutableList<Film>
         })

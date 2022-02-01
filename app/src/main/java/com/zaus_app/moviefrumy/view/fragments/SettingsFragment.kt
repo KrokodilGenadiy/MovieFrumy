@@ -41,7 +41,6 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //Подключаем анимации и передаем номер позиции у кнопки в нижнем меню
         val selections = resources.getStringArray(R.array.languages)
         var arrayAdapter: ArrayAdapter<String>
         AnimationHelper.performFragmentCircularRevealAnimation(
@@ -49,7 +48,6 @@ class SettingsFragment : Fragment() {
             requireActivity(),
             4
         )
-        //Слушаем, какой у нас сейчас выбран вариант в настройках
         viewModel.languagePropertyLiveData.observe(viewLifecycleOwner, {
             when (it) {
                 RUSSIAN_LANGUAGE   -> {
@@ -67,7 +65,6 @@ class SettingsFragment : Fragment() {
             }
         })
 
-        //Слушатель для отправки нового состояния в настройки
         binding.languageSelection.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
                 when (parent.getItemAtPosition(position).toString()) {

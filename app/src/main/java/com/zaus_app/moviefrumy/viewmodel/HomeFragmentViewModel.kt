@@ -15,7 +15,6 @@ class HomeFragmentViewModel : ViewModel() {
     var status: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
     private var currentPage = 1
-    //Инициализируем интерактор
     @Inject
     lateinit var interactor: Interactor
     var filmsListLiveData: LiveData<List<Film>>

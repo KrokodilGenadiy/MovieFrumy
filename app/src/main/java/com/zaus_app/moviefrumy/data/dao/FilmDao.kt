@@ -7,7 +7,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.zaus_app.moviefrumy.data.entity.Film
 
-//Помечаем, что это не просто интерфейс, а Dao-объект
 @Dao
 interface FilmDao {
     //Запрос на всю таблицу
