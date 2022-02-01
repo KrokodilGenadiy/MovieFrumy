@@ -1,6 +1,7 @@
 package com.zaus_app.moviefrumy.viewmodel
 
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
@@ -11,24 +12,24 @@ import javax.inject.Inject
 
 
 class HomeFragmentViewModel : ViewModel() {
-    val filmsListLiveData: MutableLiveData<List<Film>> = MutableLiveData()
     var status: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
     private var currentPage = 1
     //Инициализируем интерактор
     @Inject
     lateinit var interactor: Interactor
+    var filmsListLiveData: LiveData<List<Film>>
 
     private val apiCallback = object : ApiCallback {
-        override fun onSuccess(films: List<Film>) {
+        override fun onSuccess() {
             showShimmering.postValue(false)
-            filmsListLiveData.postValue(films)
+            filmsListLiveData = interactor.getFilmsFromDB()
         }
 
         override fun onFailure() {
             showShimmering.postValue(false)
             Executors.newSingleThreadExecutor().execute {
-                filmsListLiveData.postValue(interactor.getFilmsFromDB())
+                filmsListLiveData = interactor.getFilmsFromDB()
                 status.postValue(true)
             }
         }
@@ -41,11 +42,12 @@ class HomeFragmentViewModel : ViewModel() {
 
     init {
         App.instance.dagger.inject(this)
+        filmsListLiveData = interactor.getFilmsFromDB()
         getFilms()
     }
 
     interface ApiCallback {
-        fun onSuccess(films: List<Film>)
+        fun onSuccess()
         fun onFailure()
     }
 
