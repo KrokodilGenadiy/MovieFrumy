@@ -1,6 +1,5 @@
 package com.zaus_app.moviefrumy.domain
 
-import androidx.lifecycle.LiveData
 import com.zaus_app.moviefrumy.data.*
 import com.zaus_app.moviefrumy.data.entity.FavoriteFilm
 import com.zaus_app.moviefrumy.data.entity.Film
@@ -32,12 +31,6 @@ class Interactor(private val repo: MainRepository, private val retrofitService: 
                 callback.onFailure()
             }
         })
-    }
-
-    fun nukeMainTable() {
-        scope.launch {
-            repo.deleteAll()
-        }
     }
     fun getFavoriteFilms(): Flow<List<FavoriteFilm>> = repo.getAllFromFavorites()
     fun addToFavorites(film: Film) {
