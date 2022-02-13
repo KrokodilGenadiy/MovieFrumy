@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +20,8 @@ import com.zaus_app.moviefrumy.view.rv_adapters.FilmAdapter
 import com.zaus_app.moviefrumy.view.rv_adapters.diffutils.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.itemdecorators.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.HomeFragmentViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 import java.util.*
 
 
@@ -32,19 +33,17 @@ class HomeFragment : Fragment() {
     private var isRefreshing = false
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FilmAdapter
+    private lateinit var scope: CoroutineScope
     private var filmsDataBase = mutableListOf<Film>()
-        //Используем backing field
         set(value) {
-            //Если придет такое же значение то мы выходим из метода
             if (field == value) return
-            //Если пришло другое значение, то кладем его в переменную
-            if (isRefreshing) {
+            if (isRefreshing || ((viewModel.isFromInternet) && (viewModel.currentPage == 1))) {
                 field = value
+                viewModel.isFromInternet = false
                 isRefreshing = false
             } else {
                 field = (field + value) as MutableList<Film>
             }
-            //Обновляем RV адаптер
             updateData(field)
         }
 
@@ -53,56 +52,22 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         AnimationHelper.performFragmentCircularRevealAnimation(
             binding.homeConstraintLayout,
             requireActivity(),
             1
         )
-
-
         initToolbar()
-        binding.searchView.setOnClickListener {
-            binding.searchView.isIconified = false
-        }
-
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            //Этот метод отрабатывает при нажатии кнопки "поиск" на софт клавиатуре
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            //Этот метод отрабатывает на каждое изменения текста
-            override fun onQueryTextChange(newText: String): Boolean {
-                //Если ввод пуст то вставляем в адаптер всю БД
-                if (newText.isEmpty()) {
-                    updateData(filmsDataBase)
-                    return true
-                }
-                //Фильтруем список на поискк подходящих сочетаний
-                val result = filmsDataBase.filter {
-                    //Чтобы все работало правильно, нужно и запрос, и имя фильма приводить к нижнему регистру
-                    it.title.lowercase(Locale.getDefault())
-                        .contains(newText.lowercase(Locale.getDefault()))
-                }
-                //Добавляем в адаптер
-                updateData(result as MutableList<Film>)
-                return true
-            }
-        })
-
+        initSearchView()
         initRecycler()
-
-
-        viewModel.status.observe(viewLifecycleOwner, {
+        viewModel.status.observe(viewLifecycleOwner) {
             if (it)
                 Snackbar.make(
                     binding.root,
@@ -110,14 +75,18 @@ class HomeFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 ).show()
             viewModel.status.postValue(false)
-        })
-        //Кладем нашу БД в RV
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
-            filmsDataBase = it as MutableList<Film>
-            updateData(filmsDataBase)
-        })
+        }
+        scope = CoroutineScope(Dispatchers.IO).also { scope ->
+            scope.launch {
+                viewModel.filmsListData.collect {
+                    withContext(Dispatchers.Main) {
+                        filmsDataBase = it as MutableList<Film>
+                    }
+                }
+            }
+        }
 
-        viewModel.showShimmering.observe(viewLifecycleOwner, {
+        viewModel.showShimmering.observe(viewLifecycleOwner) {
             if (it) {
                 binding.include.shimmerLayout.visibility = View.VISIBLE
                 binding.include.shimmerLayout.startShimmer()
@@ -125,9 +94,7 @@ class HomeFragment : Fragment() {
                 binding.include.shimmerLayout.stopShimmer()
                 binding.include.shimmerLayout.visibility = View.GONE
             }
-        })
-
-        //initPullToRefresh()
+        }
 
         binding.include.mainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -143,6 +110,10 @@ class HomeFragment : Fragment() {
         })
     }
 
+    override fun onStop() {
+        super.onStop()
+        scope.cancel()
+    }
 
     fun initRecycler() {
         binding.include.mainRecycler.apply {
@@ -158,9 +129,33 @@ class HomeFragment : Fragment() {
         }
     }
 
+    fun initSearchView() {
+        binding.searchView.setOnClickListener {
+            binding.searchView.isIconified = false
+        }
+
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isEmpty()) {
+                    updateData(filmsDataBase)
+                    return true
+                }
+                val result = filmsDataBase.filter {
+                    it.title.lowercase(Locale.getDefault())
+                        .contains(newText.lowercase(Locale.getDefault()))
+                }
+                updateData(result as MutableList<Film>)
+                return true
+            }
+        })
+    }
+
     fun initRefresh() {
         isRefreshing = true
-        //Делаем новый запрос фильмов на сервер
         viewModel.getFilms()
         binding.include.mainRecycler.layoutManager?.scrollToPosition(0)
     }

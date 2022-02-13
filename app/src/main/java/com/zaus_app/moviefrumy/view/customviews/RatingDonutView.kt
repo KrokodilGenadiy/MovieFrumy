@@ -12,33 +12,25 @@ class RatingDonutView @JvmOverloads constructor(
     context: Context,
     attributeSet: AttributeSet? = null
 ) : View(context, attributeSet) {
-    //Овал для рисования сегментов прогресс бара
     private val oval = RectF()
 
-    //Координаты центра View, а также Radius
     private var radius: Float = 0f
     private var centerX: Float = 0f
     private var centerY: Float = 0f
 
-    //Толщина линии прогресса
     private var stroke = 10f
 
-    //Значение прогресса от 0 - 100
     private var progress = 50
 
-    //Значение прогресса от 0 - 100
     private var currentProgress = 0
 
-    //Значения размера текста внутри кольца
     private var scaleSize = 60f
 
-    //Краски для фигур
     private lateinit var strokePaint: Paint
     private lateinit var digitPaint: Paint
     private lateinit var circlePaint: Paint
 
     init {
-        //Получаем атрибуты и устанвливаем их в соответствующие поля
         val a =
             context.theme.obtainStyledAttributes(attributeSet, R.styleable.RatingDonutView, 0, 0)
         try {
@@ -49,7 +41,6 @@ class RatingDonutView @JvmOverloads constructor(
         } finally {
             a.recycle()
         }
-        //Инициализируем первоначальные краски
         initPaint()
     }
 
@@ -110,9 +101,7 @@ class RatingDonutView @JvmOverloads constructor(
         }
 
     override fun onDraw(canvas: Canvas) {
-        //Рисуем кольцо и задний фон
         drawRating(canvas)
-        //Рисуем цифры
         drawText(canvas)
     }
 

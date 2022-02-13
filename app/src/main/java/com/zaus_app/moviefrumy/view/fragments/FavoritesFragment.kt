@@ -11,11 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.zaus_app.moviefrumy.databinding.FragmentFavoritesBinding
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.utils.AnimationHelper
+import com.zaus_app.moviefrumy.utils.Converter
 import com.zaus_app.moviefrumy.view.MainActivity
 import com.zaus_app.moviefrumy.view.rv_adapters.FavoritesAdapter
 import com.zaus_app.moviefrumy.view.rv_adapters.diffutils.FilmDiff
 import com.zaus_app.moviefrumy.view.rv_adapters.itemdecorators.ItemDecorator
 import com.zaus_app.moviefrumy.viewmodel.FavoriteFragmentViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collect
 
 
 class FavoritesFragment : Fragment() {
@@ -25,9 +28,9 @@ class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private lateinit var filmsAdapter: FavoritesAdapter
-    private var favotesDataBase = mutableListOf<Film>()
+    private lateinit var scope: CoroutineScope
+    private var favoritesDataBase = mutableListOf<Film>()
         set(value) {
-            //Если придет такое же значение то мы выходим из метода
             if (field == value) return
             field = value
             updateData(field)
@@ -47,10 +50,6 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
-            favotesDataBase = it as MutableList<Film>
-        })
-        initRecycler()
         return binding.root
     }
 
@@ -59,13 +58,29 @@ class FavoritesFragment : Fragment() {
 
         AnimationHelper.performFragmentCircularRevealAnimation(binding.favoritesFragment, requireActivity(), 2)
 
-        if (viewModel.interactor.getFavoriteFilms().isEmpty()) {
-            binding.listIsEmptyText.visibility = View.VISIBLE
-            binding.lottieAnim.visibility = View.VISIBLE
-        } else {
-            binding.listIsEmptyText.visibility = View.GONE
-            binding.lottieAnim.visibility = View.GONE
+        initRecycler()
+
+        scope = CoroutineScope(Dispatchers.IO).also { scope ->
+            scope.launch {
+                viewModel.filmsListData.collect {
+                    withContext(Dispatchers.Main) {
+                        favoritesDataBase = Converter.convertListOfFavoriteToFilmList(it)
+                        if (favoritesDataBase.size == 0) {
+                            binding.listIsEmptyText.visibility = View.VISIBLE
+                            binding.lottieAnim.visibility = View.VISIBLE
+                        } else {
+                            binding.listIsEmptyText.visibility = View.GONE
+                            binding.lottieAnim.visibility = View.GONE
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        scope.cancel()
     }
 
     fun updateData(newList: MutableList<Film>) {
@@ -83,10 +98,6 @@ class FavoritesFragment : Fragment() {
             val decorator = ItemDecorator(8)
             addItemDecoration(decorator)
         }
-
-        viewModel.filmsListLiveData.observe(viewLifecycleOwner, {
-            favotesDataBase = it as MutableList<Film>
-        })
     }
 
 

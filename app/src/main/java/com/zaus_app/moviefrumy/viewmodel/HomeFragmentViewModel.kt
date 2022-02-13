@@ -1,12 +1,13 @@
 package com.zaus_app.moviefrumy.viewmodel
 
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.domain.Interactor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -14,21 +15,25 @@ import javax.inject.Inject
 class HomeFragmentViewModel : ViewModel() {
     var status: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
-    private var currentPage = 1
+    private lateinit var scope: CoroutineScope
+    var isFromInternet: Boolean = false
+    var currentPage = 1
     @Inject
     lateinit var interactor: Interactor
-    var filmsListLiveData: LiveData<List<Film>>
+    var filmsListData: Flow<List<Film>>
+
 
     private val apiCallback = object : ApiCallback {
         override fun onSuccess() {
+            isFromInternet = true
             showShimmering.postValue(false)
-            filmsListLiveData = interactor.getFilmsFromDB()
+            filmsListData = interactor.getFilmsFromDB()
         }
 
         override fun onFailure() {
             showShimmering.postValue(false)
-            Executors.newSingleThreadExecutor().execute {
-                filmsListLiveData = interactor.getFilmsFromDB()
+            scope.launch {
+                filmsListData = interactor.getFilmsFromDB()
                 status.postValue(true)
             }
         }
@@ -41,13 +46,8 @@ class HomeFragmentViewModel : ViewModel() {
 
     init {
         App.instance.dagger.inject(this)
-        filmsListLiveData = interactor.getFilmsFromDB()
+        filmsListData = interactor.getFilmsFromDB()
         getFilms()
-    }
-
-    interface ApiCallback {
-        fun onSuccess()
-        fun onFailure()
     }
 
     fun doPagination(visibleItemCount: Int,totalItemCount: Int,pastVisibleItemCount: Int) {
@@ -55,6 +55,11 @@ class HomeFragmentViewModel : ViewModel() {
             val page = ++currentPage
             interactor.getFilmsFromApi(page,apiCallback)
         }
+    }
+
+    interface ApiCallback {
+        fun onSuccess()
+        fun onFailure()
     }
 }
 

@@ -33,22 +33,15 @@ class MainActivity : AppCompatActivity() {
         homeBinding = FragmentHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initNavigation()
-
-        //Зупускаем фрагмент при старте
         changeFragment(HomeFragment(), "home")
     }
 
     fun launchDetailsFragment(film: Film) {
-        //Создаем "посылку"
         val bundle = Bundle()
-        //Кладем наш фильм в "посылку"
         bundle.putParcelable("film", film)
-        //Кладем фрагмент с деталями в перменную
         val fragment = checkFragmentExistence("details") ?: DetailsFragment()
-        //Прикрепляем нашу "посылку" к фрагменту
         fragment.arguments = bundle
 
-        //Запускаем фрагмент
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_placeholder, fragment, "details")
@@ -62,8 +55,6 @@ class MainActivity : AppCompatActivity() {
                 R.id.home -> {
                     val tag = "home"
                     val fragment = checkFragmentExistence(tag)
-                    //В первом параметре, если фрагмент не найден и метод вернул null, то с помощью
-                    //элвиса мы вызываем создание нвого фрагмента
                     changeFragment(fragment ?: HomeFragment(), tag)
 
                     true
@@ -91,7 +82,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //Ищем фрагмент по тэгу, если он есть то возвращаем его, если нет - то null
     private fun checkFragmentExistence(tag: String): Fragment? =
         supportFragmentManager.findFragmentByTag(tag)
 
