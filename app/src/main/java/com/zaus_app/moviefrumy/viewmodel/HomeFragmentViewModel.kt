@@ -6,6 +6,8 @@ import com.zaus_app.moviefrumy.App
 import com.zaus_app.moviefrumy.data.entity.Film
 import com.zaus_app.moviefrumy.domain.Interactor
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
@@ -14,24 +16,22 @@ import javax.inject.Inject
 
 class HomeFragmentViewModel : ViewModel() {
     var status: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
-    val showShimmering: MutableLiveData<Boolean> = MutableLiveData()
-    private lateinit var scope: CoroutineScope
+    val showShimmering: Channel<Boolean>
+    val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     var isFromInternet: Boolean = false
     var currentPage = 1
+    var filmsListData: Flow<List<Film>>
     @Inject
     lateinit var interactor: Interactor
-    var filmsListData: Flow<List<Film>>
 
 
     private val apiCallback = object : ApiCallback {
         override fun onSuccess() {
             isFromInternet = true
-            showShimmering.postValue(false)
             filmsListData = interactor.getFilmsFromDB()
         }
 
         override fun onFailure() {
-            showShimmering.postValue(false)
             scope.launch {
                 filmsListData = interactor.getFilmsFromDB()
                 status.postValue(true)
@@ -40,12 +40,12 @@ class HomeFragmentViewModel : ViewModel() {
     }
 
     fun getFilms() {
-        showShimmering.postValue(true)
         interactor.getFilmsFromApi(1, apiCallback)
     }
 
     init {
         App.instance.dagger.inject(this)
+        showShimmering = interactor.shimmeringState
         filmsListData = interactor.getFilmsFromDB()
         getFilms()
     }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DiffUtil
@@ -84,15 +85,16 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-        }
-
-        viewModel.showShimmering.observe(viewLifecycleOwner) {
-            if (it) {
-                binding.include.shimmerLayout.visibility = View.VISIBLE
-                binding.include.shimmerLayout.startShimmer()
-            } else {
-                binding.include.shimmerLayout.stopShimmer()
-                binding.include.shimmerLayout.visibility = View.GONE
+            scope.launch {
+                for (element in viewModel.showShimmering) {
+                    launch(Dispatchers.Main) {
+                        if (element)
+                            binding.include.shimmerLayout.startShimmer()
+                        else
+                            binding.include.shimmerLayout.stopShimmer()
+                        binding.include.shimmerLayout.isVisible = element
+                    }
+                }
             }
         }
 
